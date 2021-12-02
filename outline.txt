@@ -7,7 +7,6 @@ main() - Giacomo
 planet object - Tom
 	-health //start with max of 10 lives 
 	-location //this is constant
-	-hitbox //rectangle 20x10
 	-loseLives() //function to subtract 1 life
 	-update() //function which updates every timestamp
 	
@@ -15,7 +14,6 @@ ship object - Michelle
 	-health //start with max of 10 lives 
 	-location
 	-rotation (0-360)
-	-hitbox //rectangle 10x5
 	-speed //start with a constant speed = 5
 	-update() //function which updates every timestamp
 	
@@ -24,7 +22,6 @@ bullet object - Kenny
 	-damage //start with damage =1
 	-location
 	-trajectory //get this by referencing angle of ship (rotation)
-	-hitbox //rectangle 2x2
 	-speed //start with constant speed = 5
 	-update() //function which updates every timestamp
 	
@@ -32,7 +29,6 @@ asteroid object - Giacomo
 	-spawn // random either max x all y or 2nd half x max y
 	-destination // random
 	-trajectory // straight line destination - spawn
-	-hitbox //rectangle 5x3
 	-speed //start with constant speed = 5
 	-health //constant at 1
 	-update() //function which updates every timestamp
