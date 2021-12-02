@@ -5,9 +5,9 @@ using namespace std;
 Asteroid::Asteroid()
 {
 	//declaration of variables given screen size of 920 x 1080 pixels
-	int xSpawnMax = 1080;
+	int xSpawnMax = 1920;
 	int xSpawnMin = xSpawnMax / 2;
-	int ySpawnMax = 920;
+	int ySpawnMax = 1080;
 	int ySpawnMin = 0;
 	int yDestMax = ySpawnMax * 3 / 4;
 	int yDestMin = ySpawnMax * 1 / 4;
