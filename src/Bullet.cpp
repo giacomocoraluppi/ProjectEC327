@@ -11,46 +11,20 @@ Bullet::Bullet(int xIn, int yIn, int angle)
     //initialize location of bullet
     xLocation=xIn;
     yLocation=yIn;
+    
+    //initialize trajectory of bullet
+    xTraj = cos(double(angle*3.14159/180.0));
+    yTraj = sin(double(angle*3.14159/180.0));
+    xTraj = speed * xTraj;
+    yTraj = speed * yTraj;
 }
-/*
-bullet::bullet(spaceship_headloationx,spaceship_headlocationy)
-{
-    speed=5;
-    damage=1;
-    locationx=spaceship_headloation.x;
-    locationy=spaceship_headloation.y;
-}
-*/
+
 void Bullet::update()
 {
-        xLocation += speed*time;
-        yLocation += speed*time;
+        xLocation = xLocation + xTraj;
+        yLocation = yLocation + xTraj;
         
         cout << "Bullet updated" << endl;
         cout << "xLocation: " << xLocation << endl;
         cout << "yLocation: " << yLocation << endl;
-        
-       
 }
-/*
-unsigned int bullet::getspeed() const
-{
-    return speed;
-}
-
-unsigned int damage bullet::getdamage() const
-{
-    return damage;
-}
-
-Point2D bullet::getlocation() const
-{
-    return location;
-}
-
-Vector2D trajectory()
-{
-    
-}
-*/
-

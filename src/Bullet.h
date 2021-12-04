@@ -13,25 +13,15 @@ using namespace std;
 class Bullet
 {
 public:
-    int speed;
     int damage;
+    int speed;
     int xLocation;
     int yLocation;
+    int xTraj;
+    int yTraj;
+    
     Bullet(int, int, int);
-    void update();
-    void hitbox();
-    int time;
-    //Vecter2D trajectory();
-    unsigned int getspeed() const;
-    unsigned int getsdamage() const;
-    unsigned int getlocation() const;
-    
-    
-    
-    
-   
+    void update(); 
 };
 
-
-#endif //include guard
-
+#endif

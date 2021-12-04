@@ -85,12 +85,3 @@ void Asteroid::update()
 		health = 0;
 	}
 }
-	
-	
-	
-	
-
-	
-	
-	
-
