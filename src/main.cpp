@@ -1,4 +1,5 @@
 #include "Asteroid.h"
+#include "Ship.h"
 #include <iostream>
 using namespace std;
 
@@ -6,7 +7,7 @@ int main()
 {
 	//Asteroid();
 	Asteroid* asteroid1 = new Asteroid();
-	
+	Ship* ship1 = new Ship();
 	/*
 	cout << "xLocation: " << asteroid1->xLocation << endl;
 	cout << "yLocation: " << asteroid1->yLocation << endl;

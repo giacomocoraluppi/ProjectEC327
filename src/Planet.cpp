@@ -1,23 +1,19 @@
-#include <iostream>
 #include "Planet.h"
-
+#include <iostream>
 using namespace std;
 
 Planet::Planet()
 {
+	//initialize health of planet
     health = 10;
     
-    location_x = 0;
-    location_y = 540;
+    //initialize location of planet
+    xLocation = 0;
+    yLocation = 540;
 }
 
-void Planet::loseLives()
+int Planet::loseLives()
 {
     health--;
+    return health;
 }
-
-/*bool Planet::update()
-{
-    
-}
-*/

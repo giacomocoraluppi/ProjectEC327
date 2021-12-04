@@ -1,9 +1,6 @@
-# include <iostream>
-
 #include "Ship.h"
-
+#include <iostream>
 using namespace std;
-
 
 Ship::Ship()
 {
@@ -18,9 +15,7 @@ Ship::Ship()
 	// set normal rotation facing right side
 	int LeftRotation = 0;
 	int RightRotation = 90;
-
 }
-
 
 int Ship::RightRotation()
 {
@@ -32,4 +27,10 @@ int Ship::LeftRotation()
 {
 	int LeftRotation = xLocation * sinf(LeftRotation) + yLocation * cosf(LeftRotation);
 	return LeftRotation;
+}
+
+//getters
+int Ship::getxLocation()
+{
+	return xLocation;
 }
