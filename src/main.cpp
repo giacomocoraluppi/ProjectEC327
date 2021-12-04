@@ -11,7 +11,7 @@ int main()
 	Ship* theShip = new Ship();
 	
 	//these will need to be in loop
-	Bullet* bullet1 = new Bullet(theShip->xLocation, theShip->yLocation, theShip->leftRotation, theShip->rightRotation);
+	Bullet* bullet1 = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
 	Asteroid* asteroid1 = new Asteroid();
 	
 	/*

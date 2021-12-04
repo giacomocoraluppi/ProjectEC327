@@ -13,18 +13,17 @@ Ship::Ship()
 	int yLocation = 460;
 
 	// set normal rotation facing right side
-	int leftRotation = 0;
-	int rightRotation = 90;
+	int angle = 0;
 }
 
 int Ship::RightRotation()
 {
-	int rightRotation = xLocation * cosf(rightRotation) - yLocation * sinf(rightRotation);
-	return rightRotation;
+	angle = angle - 5;
+	return angle;
 }
 
 int Ship::LeftRotation()
 {
-	int leftRotation = xLocation * sinf(leftRotation) + yLocation * cosf(leftRotation);
-	return leftRotation;
+	angle = angle + 5;
+	return angle;
 }

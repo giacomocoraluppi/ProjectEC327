@@ -17,8 +17,7 @@ public:
     int damage;
     int xLocation;
     int yLocation;
-    Bullet(int, int, int, int);
-    Bullet(int, int);
+    Bullet(int, int, int);
     void update();
     void hitbox();
     int time;

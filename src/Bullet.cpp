@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std; 
 
-Bullet::Bullet(int xIn, int yIn, int leftRot, int rightRot)
+Bullet::Bullet(int xIn, int yIn, int angle)
 {
 	//initialize damage and speed of bullet
     damage=1;

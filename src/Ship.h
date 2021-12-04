@@ -14,8 +14,7 @@ public:
 	int speed;
 	int xLocation;
 	int yLocation;
-	int leftRotation;
-	int rightRotation;
+	int angle;
 
 	Ship();
 	int LeftRotation();
