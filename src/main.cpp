@@ -1,13 +1,19 @@
 #include "Asteroid.h"
 #include "Ship.h"
+#include "Planet.h"
+#include "Bullet.h"
 #include <iostream>
 using namespace std;
 
 int main()
 {
-	//Asteroid();
+	Planet* thePlanet = new Planet();
+	Ship* theShip = new Ship();
+	
+	//these will need to be in loop
+	Bullet* bullet1 = new Bullet(theShip->xLocation, theShip->yLocation, theShip->leftRotation, theShip->rightRotation);
 	Asteroid* asteroid1 = new Asteroid();
-	Ship* ship1 = new Ship();
+	
 	/*
 	cout << "xLocation: " << asteroid1->xLocation << endl;
 	cout << "yLocation: " << asteroid1->yLocation << endl;

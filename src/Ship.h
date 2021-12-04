@@ -14,12 +14,12 @@ public:
 	int speed;
 	int xLocation;
 	int yLocation;
+	int leftRotation;
+	int rightRotation;
 
 	Ship();
 	int LeftRotation();
 	int RightRotation();
-	int getxLocation();
-	int getyLocation();
 };
 
 #endif

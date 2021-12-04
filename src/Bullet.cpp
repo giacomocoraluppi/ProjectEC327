@@ -2,15 +2,15 @@
 #include <iostream>
 using namespace std; 
 
-Bullet::Bullet()
+Bullet::Bullet(int xIn, int yIn, int leftRot, int rightRot)
 {
 	//initialize damage and speed of bullet
     damage=1;
     speed=5;
     
-    //initialize location of bullet - fix this
-    //xLocation=ship1->xLocation;
-    //yLocation=Ship->yLocation;
+    //initialize location of bullet
+    xLocation=xIn;
+    yLocation=yIn;
 }
 /*
 bullet::bullet(spaceship_headloationx,spaceship_headlocationy)
