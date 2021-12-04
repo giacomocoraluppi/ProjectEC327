@@ -9,22 +9,21 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
-#include "Point2D.h"
 using namespace std;
 
 class bullet
 {
-private:
+public:
     unsigned int speed;
     unsigned int damage;
-    Point2D location;
-public:
+    int locationx;
+    int locationy;
     bullet();
-    bullet(Point2D spaceship_loation);
+    bullet(int, int);
     void update();
     void hitbox();
     int time;
-    Vecter2D trajectory();
+    //Vecter2D trajectory();
     unsigned int getspeed() const;
     unsigned int getsdamage() const;
     unsigned int getlocation() const;

@@ -22,12 +22,14 @@ Ship::Ship()
 }
 
 
-void Ship::RightRotation()
+int Ship::RightRotation()
 {
-	RightRotation = xLocation * cosf(RightRotation) - yLocation * sinf(RightRotation);
+	int RightRotation = xLocation * cosf(RightRotation) - yLocation * sinf(RightRotation);
+	return RightRotation;
 }
 
-void Ship::LeftRotation()
+int Ship::LeftRotation()
 {
-	LeftRotation = xLocation * sinf(LeftRotation) + yLocation * cosf(LeftRotation);
+	int LeftRotation = xLocation * sinf(LeftRotation) + yLocation * cosf(LeftRotation);
+	return LeftRotation;
 }
