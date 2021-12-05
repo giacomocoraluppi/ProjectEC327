@@ -27,3 +27,15 @@ int Ship::LeftRotation()
 	angle = angle + 5;
 	return angle;
 }
+
+void Ship::update()
+{
+	xLocation = xLocation + speed * cos(double(angle)*3.14159/180.0);
+	yLocation = yLocation + speed * sin(double(angle)*3.14159/180.0);
+}
+
+int Ship::loseLives()
+{
+    health--;
+    return health;
+}

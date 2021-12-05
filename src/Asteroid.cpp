@@ -85,3 +85,9 @@ void Asteroid::update()
 		health = 0;
 	}
 }
+
+int Asteroid::loseLives()
+{
+    health--;
+    return health;
+}

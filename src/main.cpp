@@ -5,6 +5,14 @@
 #include <iostream>
 using namespace std;
 
+void Update()
+{
+}
+
+void AreColliding()
+{
+}
+
 int main()
 {
 	Planet* thePlanet = new Planet();
@@ -22,7 +30,7 @@ int main()
 	cout << "health: " << asteroid1->health << endl;
 	cout << "speed: " << asteroid1->speed << endl;
 	*/
-	
+	//add update hger check asteroid collisions
 	asteroid1->update();
 	asteroid1->update();
 	asteroid1->update();

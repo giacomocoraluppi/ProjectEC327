@@ -10,15 +10,16 @@ using namespace std;
 class Asteroid
 {
 public:
+	int health;
+	int speed;
 	int xLocation;
 	int yLocation;
 	double xTraj;
 	double yTraj;
-	int health;
-	int speed;
-	
+
 	Asteroid();
 	void update();
+	int loseLives();
 };
 	
 #endif

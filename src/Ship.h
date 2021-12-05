@@ -19,6 +19,8 @@ public:
 	Ship();
 	int LeftRotation();
 	int RightRotation();
+	void update();
+	int loseLives();
 };
 
 #endif

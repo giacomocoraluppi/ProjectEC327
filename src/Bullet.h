@@ -13,7 +13,7 @@ using namespace std;
 class Bullet
 {
 public:
-    int damage;
+    int health;
     int speed;
     int xLocation;
     int yLocation;
@@ -22,6 +22,7 @@ public:
     
     Bullet(int, int, int);
     void update(); 
+    int loseLives();
 };
 
 #endif
