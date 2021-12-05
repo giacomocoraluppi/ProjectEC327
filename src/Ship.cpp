@@ -5,27 +5,25 @@ using namespace std;
 Ship::Ship()
 {
 	//initialize health and speed of ship
-	int health = 10;
-	int speed = 5;
+	health = 10;
+	speed = 5;
 
 	//initialize starting point of ship
-	int xLocation = 540;
-	int yLocation = 460;
+	xLocation = 540;
+	yLocation = 460;
 
 	// set normal rotation facing right side
-	int angle = 0;
+	angle = 0;
 }
 
-int Ship::RightRotation()
+void Ship::RightRotation()
 {
 	angle = angle - 5;
-	return angle;
 }
 
-int Ship::LeftRotation()
+void Ship::LeftRotation()
 {
 	angle = angle + 5;
-	return angle;
 }
 
 void Ship::update()
@@ -34,8 +32,7 @@ void Ship::update()
 	yLocation = yLocation + speed * sin(double(angle)*3.14159/180.0);
 }
 
-int Ship::loseLives()
+void Ship::loseLives()
 {
     health--;
-    return health;
 }

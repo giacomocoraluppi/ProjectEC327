@@ -19,7 +19,7 @@ public:
 
 	Asteroid();
 	void update();
-	int loseLives();
+	void loseLives();
 };
 	
 #endif

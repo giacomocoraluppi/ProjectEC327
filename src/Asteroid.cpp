@@ -58,6 +58,7 @@ Asteroid::Asteroid()
 	xLocation = xSpawn;
 	yLocation = ySpawn;
 	
+	/*
 	cout << "Asteroid created" << endl;
 	cout << "xLocation: " << xLocation << endl;
 	cout << "yLocation: " << yLocation << endl;
@@ -65,6 +66,7 @@ Asteroid::Asteroid()
 	cout << "yTraj: " << yTraj << endl;
 	cout << "health: " << health << endl;
 	cout << "speed: " << speed << endl;
+	*/
 	
 }
 
@@ -79,8 +81,7 @@ void Asteroid::update()
 	cout << "yLocation: " << yLocation << endl;
 }
 
-int Asteroid::loseLives()
+void Asteroid::loseLives()
 {
     health--;
-    return health;
 }

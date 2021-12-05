@@ -22,13 +22,12 @@ void Bullet::update()
         xLocation = xLocation + xTraj;
         yLocation = yLocation + xTraj;
         
-        cout << "Bullet updated" << endl;
-        cout << "xLocation: " << xLocation << endl;
-        cout << "yLocation: " << yLocation << endl;
+        //cout << "Bullet updated" << endl;
+        //cout << "xLocation: " << xLocation << endl;
+        //cout << "yLocation: " << yLocation << endl;
 }
 
-int Bullet::loseLives()
+void Bullet::loseLives()
 {
     health--;
-    return health;
 }

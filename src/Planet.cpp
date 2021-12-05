@@ -12,8 +12,7 @@ Planet::Planet()
     yLocation = 540;
 }
 
-int Planet::loseLives()
+void Planet::loseLives()
 {
     health--;
-    return health;
 }

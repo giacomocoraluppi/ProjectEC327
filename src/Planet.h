@@ -11,7 +11,7 @@ public:
     int yLocation;
 
     Planet();
-    int loseLives();
+    void loseLives();
 };
 
 #endif

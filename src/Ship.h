@@ -17,10 +17,10 @@ public:
 	int angle;
 
 	Ship();
-	int LeftRotation();
-	int RightRotation();
+	void LeftRotation();
+	void RightRotation();
 	void update();
-	int loseLives();
+	void loseLives();
 };
 
 #endif
