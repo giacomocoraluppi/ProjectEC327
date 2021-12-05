@@ -2,70 +2,63 @@
 #include "Ship.h"
 #include "Planet.h"
 #include "Bullet.h"
+#include <string>
+#include <sstream>
+#include <unistd.h>
+#include <ctime>
 #include <iostream>
 using namespace std;
 
 void Update()
 {
+	
+	//are colliding
+
 }
 
-void AreColliding()
-{
-}
+
 
 int main()
 {
+	//initialize thePlanet and theShip
 	Planet* thePlanet = new Planet();
 	Ship* theShip = new Ship();
 	
-	//these will need to be in loop
-	Bullet* bullet1 = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
-	Asteroid* asteroid1 = new Asteroid();
-	
+	int start = time(NULL);
+	int now = 0;
+	int count = 0;
+	while (true)
+	{
+		now = time(NULL) - start;
+		if (now > 2)
+		{
+			start = time(NULL);
+		  	stringstream ss;  
+			ss<<count;  
+		    string s;  
+   		    ss>>s;  
+   		    
+			//string bulletName = "bullet" + s;
+			//cout << bulletName << endl;
+			Bullet* ("bullet" + s) = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
+			//Asteroid* asteroid1 = new Asteroid();
+			count++;
+		}
+
+		
+	}
+
 	/*
-	cout << "xLocation: " << asteroid1->xLocation << endl;
-	cout << "yLocation: " << asteroid1->yLocation << endl;
-	cout << "xTraj: " << asteroid1->xTraj << endl;
-	cout << "yTraj: " << asteroid1->yTraj << endl;
-	cout << "health: " << asteroid1->health << endl;
-	cout << "speed: " << asteroid1->speed << endl;
-	*/
-	//add update hger check asteroid collisions
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
-	
 	if (asteroid1 -> health == 0)
 	{
 		cout << "crashed********" << endl;
 		delete asteroid1;
 	}
-	asteroid1->update();
-	asteroid1->update();
-	asteroid1->update();
 	
+	asteroid1->update();
+	asteroid1->update();
+	asteroid1->update();
+	*/
 
 	return 0;
 }

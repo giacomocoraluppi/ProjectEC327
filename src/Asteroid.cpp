@@ -77,13 +77,6 @@ void Asteroid::update()
 	cout << "Asteroid updated" << endl;
 	cout << "xLocation: " << xLocation << endl;
 	cout << "yLocation: " << yLocation << endl;
-	
-	//if asteroid has reached planet
-	if (xLocation <= 30)
-	{
-		cout << "Asteroid crashed into planet" << endl;
-		health = 0;
-	}
 }
 
 int Asteroid::loseLives()
