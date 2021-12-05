@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <ctime>
+//#include "Keyboard.hpp"
 #include <iostream>
 using namespace std;
 
@@ -69,9 +70,13 @@ int main()
 		
 		//update rotation and location of ship
 		//if (key = <)
-		theShip->LeftRotation();
+		{
+			theShip->LeftRotation();
+		}
 		//if (key =>)
-		theShip->RightRotation();
+		{
+			theShip->RightRotation();
+		}
 		theShip->update();
 		
 		//update location of each bullet
