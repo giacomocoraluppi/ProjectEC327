@@ -7,46 +7,47 @@ Bullet::Bullet(float xIn, float yIn, float angle)
     speed = 5;
     
     //initialize location of bullet
-	xLocation = xIn; 
-	yLocation = yIn;
+	xLocation = xIn + 20 * cos(double(angle - 90)*3.14159 / 180.0);
+	yLocation = yIn + 20 * sin(double(angle - 90)*3.14159 / 180.0);
     
     //initialize trajectory of bullet
-    xTraj = speed * cos(double(angle - 90)*3.14159/180.0);
-    yTraj = speed * sin(double(angle - 90)*3.14159/180.0);
+	xTraj = (xLocation - xIn);
+	yTraj = (yLocation - yIn);
+
+	double totalTraj = sqrt(xTraj * xTraj + yTraj * yTraj);
+	
+	xTraj = speed * cos(double(angle - 90)*3.14159 / 180.0);
+	yTraj = speed * sin(double(angle - 90)*3.14159 / 180.0);
+	
 
 	//initialize graphics for the bullet
 	sf::RectangleShape temp(sf::Vector2f(5, 20));
 	sf::Texture tempTexture;
 
 	tempTexture.loadFromFile("graphics/playerBeam.png");
-	temp.setOrigin(2.5, 10);
+	temp.setOrigin(2.5, 0);
 
 	temp.setTexture(&bulletTexture);
 	temp.setPosition(xLocation, yLocation);
+	temp.setRotation(angle);
 
 	bulletSprite = temp;
 	bulletTexture = tempTexture;
 }
 
-/*
-Bullet::~Bullet()
+void Bullet::update()
 {
-}
-
-*/
-
-void Bullet::update()//should includes a time elapsedTime
-{
-	/*
-	xLocation += elapsedTime * xTraj;
-	yLocation += elapsedTime * yTraj;
-	*/
         xLocation = xLocation + xTraj;
-        yLocation = yLocation + xTraj;
+        yLocation = yLocation + yTraj;
         
         //cout << "Bullet updated" << endl;
         //cout << "xLocation: " << xLocation << endl;
         //cout << "yLocation: " << yLocation << endl;
+}
+
+void Bullet::loseLives()
+{
+    health--;
 }
 
 /*
@@ -61,8 +62,3 @@ bool Bullet::IsOut()
 	return false;
 }
 */
-
-void Bullet::loseLives()
-{
-    health--;
-}

@@ -6,6 +6,8 @@
 
 #include "Ship.h"
 #include "Planet.h"
+#include "Bullet.h"
+#include "Asteroid.h"
 
 using namespace sf;
 
@@ -16,11 +18,12 @@ void loadBackground(RectangleShape &background, Texture &backgroundTexture, doub
 void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship, RectangleShape &planet, Texture &planetTexture, Planet * planetVals);
 
 //draws the screen each frame
-void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet);
+void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid);
 
-//call each update function to update its values for the draw function
+//each update function updates values for the draw function
 void updatePlayer(RectangleShape &player, Ship *ship);
 void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTime);
-void updateAsteroid();
+void updateBulllet(Bullet * bullet);
+void updateAsteroid(Asteroid * asteroid);
 
 #endif //include guard

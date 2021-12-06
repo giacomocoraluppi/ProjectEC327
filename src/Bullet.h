@@ -32,7 +32,6 @@ public:
     Bullet(float, float, float);
     void update(); 
     void loseLives();
-    //~Bullet();
 };
 
 #endif
