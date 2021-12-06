@@ -12,8 +12,8 @@ class Asteroid
 public:
 	int health;
 	int speed;
-	int xLocation;
-	int yLocation;
+	float xLocation;
+	float yLocation;
 	double xTraj;
 	double yTraj;
 

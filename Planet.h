@@ -7,8 +7,8 @@ class Planet
 {
 public:
     int health;
-    int xLocation;
-    int yLocation;
+    float xLocation;
+    float yLocation;
 
     Planet();
     void loseLives();

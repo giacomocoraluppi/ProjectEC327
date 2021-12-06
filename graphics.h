@@ -8,6 +8,7 @@
 #include "Planet.h"
 
 using namespace sf;
+
 //sets the background depending on system time
 void loadBackground(RectangleShape &background, Texture &backgroundTexture, double &time);
 

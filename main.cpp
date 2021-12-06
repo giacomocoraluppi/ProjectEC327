@@ -2,14 +2,17 @@
 #include "Ship.h"
 #include "Planet.h"
 #include "Bullet.h"
+
 #include <string>
 #include <cmath>
 #include <sstream>
 #include <unistd.h>
 #include <stdlib.h>
 #include <ctime>
-//#include "Keyboard.hpp"
 #include <iostream>
+
+#include <SFML/Graphics.hpp>
+
 using namespace std;
 
 bool dist(int x1, int y1, int x2, int y2, int max)

@@ -12,13 +12,15 @@ class Ship
 public: 
 	int health;
 	int speed;
-	int xLocation;
-	int yLocation;
-	int angle;
+	float xLocation;
+	float yLocation;
+	float angle;
 
 	Ship();
 	void LeftRotation();
 	void RightRotation();
+	void WPressed();
+	void SPressed();
 	void update();
 	void loseLives();
 };
