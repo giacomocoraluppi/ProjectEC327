@@ -51,19 +51,11 @@ void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship
 	planet.setPosition(planetVals->xLocation, planetVals->yLocation);
 }
 
-void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[100], int countAsteroid) {
+void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet) {
 	window.clear(); //clear buffer
 
-	window.draw(background); //background must be drawn first
-
-	for (int i = 0; i < countBullet; i++) {
-		window.draw(bulletPtrArray[i]->bulletSprite);
-	}
-
+	window.draw(background);
 	window.draw(player);
-
-	//put asteroid spawn command here
-
 	window.draw(planet);
 
 	window.display(); //display drawn objects
@@ -122,14 +114,6 @@ void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTi
 	return;
 }
 
-void updateBulllet(Bullet * bullet) { //run during main to update bullet locations
-	//bullet->update;
-	//bullet->bulletSprite.setPosition(bullet->xLocation, bullet->yLocation);
-	return;
-}
-
-void updateAsteroid(Asteroid * asteroid) { //run during main to update asteroid locations
-	//asteroid->update;
-	//asteroid->asteroidSprite.setPosition(asteroid->xLocation, asteroid->yLocation);
+void updateAsteroid() { //run during main to update appropiate textures
 	return;
 }
