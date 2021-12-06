@@ -14,8 +14,8 @@ public:
 	int speed;
 	float xLocation;
 	float yLocation;
-	double xTraj;
-	double yTraj;
+	float xTraj;
+	float yTraj;
 
 	Asteroid();
 	void update();

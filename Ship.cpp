@@ -29,13 +29,11 @@ void Ship::LeftRotation()
 void Ship::WPressed() {
 	xLocation = xLocation + speed * cos(double(angle)*3.14159 / 180.0);
 	yLocation = yLocation + speed * sin(double(angle)*3.14159 / 180.0);
-	return;
 }
 
 void Ship::SPressed() {
 	xLocation = xLocation - speed * cos(double(angle)*3.14159 / 180.0);
 	yLocation = yLocation - speed * sin(double(angle)*3.14159 / 180.0);
-	return;
 }
 
 void Ship::update()
