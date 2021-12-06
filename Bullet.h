@@ -23,6 +23,7 @@ public:
     Bullet(int, int, int);
     void update(); 
     void loseLives();
+    //~Bullet();
 };
 
 #endif
