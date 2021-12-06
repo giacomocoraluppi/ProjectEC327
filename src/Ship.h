@@ -11,7 +11,9 @@ class Ship
 {
 public: 
 	int health;
-	int speed;
+	int moveSpeed;
+	int rotationSpeed;
+
 	float xLocation;
 	float yLocation;
 	float angle;

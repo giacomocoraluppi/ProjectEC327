@@ -11,6 +11,10 @@ Asteroid::Asteroid()
 	int ySpawnMin = 0;
 	int yDestMax = ySpawnMax * 3 / 4;
 	int yDestMin = ySpawnMax * 1 / 4;
+
+	int size = 30;
+	float rotation = 0;
+
 	
 	//intialize random seed
 	srand(time(NULL));
@@ -19,25 +23,35 @@ Asteroid::Asteroid()
 	
 	int xSpawn;
 	int ySpawn;
+
+	sf::RectangleShape asteroidSprite(sf::Vector2f(size, size));
+	sf::Texture asteroidTexture;
+
+	//choose texture randomly
 	//getting location where asteroid is spawning from
 	if (random == 0 || random == 1)
 	{
 		//asteroid comes from right side of screen
 		xSpawn = xSpawnMax;
 		ySpawn = rand() % (ySpawnMax - ySpawnMin) + ySpawnMin;
+		asteroidTexture.loadFromFile("graphics/asteroid2.png");
 	}
 	else if (random == 2)
 	{
 		//asteroid comes from top side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMax;
+		asteroidTexture.loadFromFile("graphics/asteroid3.png");
 	}
 	else if (random == 3)
 	{
 		//asteroid comes from bottom side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMin;
+		asteroidTexture.loadFromFile("graphics/asteroid3.png");
 	}
+
+	asteroidSprite.setTexture(&asteroidTexture);
 	
 	//getting location for destination of asteroid
 	int xDest = 30;
