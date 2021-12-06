@@ -18,6 +18,7 @@ int main()
 
 	//declare variables
 	double backgroundTime = time(NULL);
+	double planetTime = time(NULL);
 
 	//declare objects
 	sf::RectangleShape background(sf::Vector2f(1920, 1080));
@@ -49,23 +50,26 @@ int main()
 
 		//movement functions
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-			playerVals->LeftRotation();
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
 			playerVals->RightRotation();
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+			playerVals->LeftRotation();
+		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-			player.move(0.0, -1.5); //replace with ship move functions (note y-axis is inverted)
+			playerVals->WPressed(); //replace with ship move functions (note y-axis is inverted)
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-			player.move(0.0, 1.5); //replace with ship move functions (note y-axis is inverted)
+			playerVals->SPressed(); //replace with ship move functions (note y-axis is inverted)
 		}
+	
 
 		//update functions
-		updatePlayer(player, playerTexture, playerVals);
+		updatePlayer(player, playerVals);
 
 		//drawing functions
 		loadBackground(background, backgroundTexture, backgroundTime);
+		updatePlanet(planet, planetTexture, planetTime);
+
 		drawGame(window, background, player, planet);
 	}
 

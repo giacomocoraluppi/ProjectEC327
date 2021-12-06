@@ -19,8 +19,8 @@ void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship
 void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet);
 
 //call each update function to update its values for the draw function
-void updatePlayer(RectangleShape &player, Texture &playerTexture, Ship *ship);
-void updatePlanet();
+void updatePlayer(RectangleShape &player, Ship *ship);
+void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTime);
 void updateAsteroid();
 
 #endif //include guard
