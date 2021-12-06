@@ -9,11 +9,11 @@ Ship::Ship()
 	speed = 0;
 
 	//initialize starting point of ship
-	xLocation = 540;
-	yLocation = 460;
+	xLocation = 460;
+	yLocation = 540;
 
 	// set normal rotation facing right side
-	angle = 0;
+	angle = 90;
 }
 
 void Ship::RightRotation()
@@ -24,6 +24,18 @@ void Ship::RightRotation()
 void Ship::LeftRotation()
 {
 	angle = angle + 5;
+}
+
+void Ship::WPressed() {
+	xLocation = xLocation + speed * cos(double(angle)*3.14159 / 180.0);
+	yLocation = yLocation + speed * sin(double(angle)*3.14159 / 180.0);
+	return;
+}
+
+void Ship::SPressed() {
+	xLocation = xLocation - speed * cos(double(angle)*3.14159 / 180.0);
+	yLocation = yLocation - speed * sin(double(angle)*3.14159 / 180.0);
+	return;
 }
 
 void Ship::update()

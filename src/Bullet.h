@@ -15,10 +15,10 @@ class Bullet
 public:
     int health;
     int speed;
-    int xLocation;
-    int yLocation;
-    int xTraj;
-    int yTraj;
+    float xLocation;
+    float yLocation;
+    float xTraj;
+    float yTraj;
     
     Bullet(int, int, int);
     void update(); 
