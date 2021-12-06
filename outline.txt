@@ -1,0 +1,35 @@
+
+main() function and 4 object functions //FINISH BY THRUSDAY DEC2
+
+main() - Giacomo
+	-update() calls the 4 update functions in objects
+	-areColliding() // check whether any collisions with asteroid/planet-ship-bullet
+	
+planet object - Tom
+	-health //start with max of 10 lives 
+	-location //this is constant
+	-loseLives() //function to subtract 1 life
+	-update() //function which updates every timestamp
+	
+ship object - Michelle
+	-health //start with max of 10 lives 
+	-location
+	-rotation (0-360)
+	-speed //start with a constant speed = 5
+	-update() //function which updates every timestamp
+	
+	
+bullet object - Kenny
+	-damage //start with damage =1
+	-location
+	-trajectory //get this by referencing angle of ship (rotation)
+	-speed //start with constant speed = 5
+	-update() //function which updates every timestamp
+	
+asteroid object - Giacomo
+	-spawn // random either max x all y or 2nd half x max y
+	-destination // random
+	-trajectory // straight line destination - spawn
+	-speed //start with constant speed = 5
+	-health //constant at 1
+	-update() //function which updates every timestamp
