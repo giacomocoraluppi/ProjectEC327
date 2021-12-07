@@ -30,7 +30,6 @@ int main()
 	Ship* playerVals = new Ship();
 	Planet* planetVals = new Planet();
 	
-	
 	Bullet* bulletPtrArray[500] = {};
 	for (int i = 0; i < 500; i++)
 	{
@@ -154,14 +153,7 @@ int main()
 			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
 				asteroidPtrArray[i]->hitFlag = true;
-
 				asteroidPtrArray[i]->asteroidHit.restart();
-
-				/*
-				asteroidPtrArray[i]->yTraj = 0; //asteroid stops moving
-				asteroidPtrArray[i]->xTraj = 0; //asteroid stops moving
-				asteroidPtrArray[i]->damage = 0; //asteroid no longer does damage
-				*/
 
 				asteroidPtrArray[i]->loseLives();
 				planetVals->loseLives(asteroidPtrArray[i]->damage);
@@ -229,7 +221,8 @@ int main()
 
 		//update functions for graphics
 		updatePlayer(player, playerVals); 
-		updatePlanet(planet, planetTexture, planetTime);
+		updatePlanet(planet, planetTexture, planetVals, planetTime);
+		planetVals->planetShake();
 
 		for (int i = 0; i < countBullet; i++) {
 			updateBullet(bulletPtrArray[i]);

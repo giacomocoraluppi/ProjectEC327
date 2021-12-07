@@ -77,7 +77,7 @@ void updatePlayer(RectangleShape &player, Ship *ship){ //run during main to upda
 	return;
 }
 
-void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTime) { //run during main to update appropiate textures
+void updatePlanet(RectangleShape &planet, Texture &planetTexture, Planet * planetVals, double &gameTime) { //run during main to update appropiate textures
 	double currentTime = time(NULL);
 	int timeLoop = currentTime - gameTime;
 
@@ -120,7 +120,10 @@ void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTi
 		gameTime = time(NULL); ///reset time for loop
 		break;
 	}
+
 	planet.setTexture(&planetTexture);
+	planet.setPosition(planetVals->xLocation , planetVals->yLocation);
+
 	return;
 }
 

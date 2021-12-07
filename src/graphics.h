@@ -22,7 +22,7 @@ void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &
 
 //each update function updates values for the draw function
 void updatePlayer(RectangleShape &player, Ship *ship);
-void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTime);
+void updatePlanet(RectangleShape &planet, Texture &planetTexture, Planet * planetVals, double &gameTime);
 void updateBullet(Bullet * bullet);
 void updateAsteroid(Asteroid * asteroid);
 
