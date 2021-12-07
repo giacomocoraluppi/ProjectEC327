@@ -32,6 +32,7 @@ public:
 
 	sf::RectangleShape asteroidSprite;
 	sf::Texture asteroidTexture;
+	sf::Texture asteroidExplodeTexture;
 	sf::Clock asteroidHit;
 
 	Asteroid();

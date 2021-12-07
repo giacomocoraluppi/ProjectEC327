@@ -26,11 +26,7 @@ Asteroid::Asteroid()
 
 	sf::RectangleShape tempSprite(sf::Vector2f(size, size));
 	sf::Texture tempTexture;
-
-	asteroidTexture = tempTexture;
-
 	
-
 	//choose texture randomly
 	//getting location where asteroid is spawning from
 	if (random == 0 || random == 1)
@@ -39,7 +35,7 @@ Asteroid::Asteroid()
 		xSpawn = xSpawnMax;
 		ySpawn = rand() % (ySpawnMax - ySpawnMin) + ySpawnMin;
 
-		asteroidTexture.loadFromFile("graphics/asteroid3.png");
+		tempTexture.loadFromFile("graphics/asteroid3.png");
 		rotation = -.5;
 		angle = 90;
 	}
@@ -49,7 +45,7 @@ Asteroid::Asteroid()
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMax;
 
-		asteroidTexture.loadFromFile("graphics/asteroid2.png");
+		tempTexture.loadFromFile("graphics/asteroid2.png");
 		rotation = .4;
 		angle = 0;
 		
@@ -60,11 +56,12 @@ Asteroid::Asteroid()
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMin;
 
-		asteroidTexture.loadFromFile("graphics/asteroid2.png");
+		tempTexture.loadFromFile("graphics/asteroid2.png");
 		rotation = .9;
 		angle = 90;
 	}
 	
+
 	//getting location for destination of asteroid
 	int xDest = 30;
 	int yDest = rand() % (yDestMax - yDestMin) + yDestMin;
@@ -76,7 +73,7 @@ Asteroid::Asteroid()
 	
 	//initialize health and speed of asteroid
 	health = 1;
-	speed = 3;
+	speed = rand() % 5 + 1;
 	damage = 1;
 	
 	xTraj = speed * xTraj / totalTraj;
@@ -85,11 +82,11 @@ Asteroid::Asteroid()
 	xLocation = xSpawn;
 	yLocation = ySpawn;
 
+	asteroidTexture = tempTexture;
 	tempSprite.setTexture(&asteroidTexture);
 	tempSprite.setOrigin(size / 2, size / 2);
 
 	asteroidSprite = tempSprite;
-
 	asteroidSprite.setPosition(xLocation, yLocation);
 	
 	/*
@@ -133,19 +130,20 @@ void Asteroid::asteroidDestroyedAnimation(sf::Time animationSpeed) {
 	if (animationChange1.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //second frame
 	sf::Texture tempTexture;
 		tempTexture.loadFromFile("graphics/asteroidExplodeframe1.png");
-		asteroidTexture = tempTexture;
+		asteroidExplodeTexture = tempTexture;
+		asteroidSprite.setTexture(&asteroidExplodeTexture);
 	}
 
 	else if (animationChange2.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //second frame
 	sf::Texture tempTexture;
 		tempTexture.loadFromFile("graphics/asteroidExplodeframe2.png");
-		asteroidTexture = tempTexture;
+		asteroidExplodeTexture = tempTexture;
 	}
 
 	else if (animationChange3.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //first frame
 		sf::Texture tempTexture;
 		tempTexture.loadFromFile("graphics/asteroidExplodeframe3.png");
-		asteroidTexture = tempTexture;
+		asteroidExplodeTexture = tempTexture;
 	}
 	return;
 }

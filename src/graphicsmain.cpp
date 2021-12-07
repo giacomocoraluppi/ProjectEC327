@@ -141,7 +141,7 @@ int main()
 
 				if (playerVals->health < 1)
 				{
-					cout << "Planet has been destroyed. You have lost the game!" << endl;
+					cout << "Player has been destroyed. You have lost the game!" << endl;
 					//need to actually end game
 				}
 			}
