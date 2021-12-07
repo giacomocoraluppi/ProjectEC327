@@ -31,8 +31,8 @@ void Ship::WPressed() {
 	xLocation = xLocation + (moveSpeed * cos(double(angle - 90)*3.14159 / 180.0));
 	yLocation = yLocation + (moveSpeed * sin(double(angle - 90)*3.14159 / 180.0));
 
-	if (xLocation < 400) {
-		xLocation = 400;
+	if (xLocation < 350) {
+		xLocation = 350;
 	}
 	else if (xLocation > 1900) {
 		xLocation = 1900;
@@ -51,8 +51,8 @@ void Ship::SPressed() {
 	xLocation = xLocation - (moveSpeed * cos(double(angle - 90)*3.14159 / 180.0));
 	yLocation = yLocation - (moveSpeed * sin(double(angle - 90)*3.14159 / 180.0));
 
-	if (xLocation < 400) {
-		xLocation = 400;
+	if (xLocation < 350) {
+		xLocation = 350;
 	}
 	else if (xLocation > 1900) {
 		xLocation = 1900;

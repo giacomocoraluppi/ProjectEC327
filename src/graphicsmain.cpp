@@ -7,6 +7,7 @@
 #include "Planet.h"
 #include "Bullet.h"
 #include "Asteroid.h"
+#include "Lives.h"
 
 using namespace std;
 
@@ -42,6 +43,12 @@ int main()
 		asteroidPtrArray[i] = new Asteroid();
 	}
 
+	Lives* livesPtrArray[3] = {}; //number of lives for the ship
+	for (int i = 0; i < 4; i++)
+	{
+		livesPtrArray[i] = new Lives();
+	}
+
 	//declare objects
 	sf::RectangleShape background(sf::Vector2f(1920, 1080));
 	sf::Texture backgroundTexture;
@@ -73,9 +80,15 @@ int main()
 	//set counters before game
 	int countAsteroid = 0;
 	int countBullet = 0;
+	int countLives = 3;
 
 	double nowAsteroid = 0.0;
 	double nowBullet = 0.0;
+
+	//set location for life hearts
+	for (int i = 0; i < countLives; i++) {
+		setLives(livesPtrArray[i], i);
+	}
 
 	//set animation speed
 	sf::Time asteroidAnimationSpeed = sf::milliseconds(300);
@@ -87,14 +100,14 @@ int main()
 		sf::Event evnt;
 		while (window.pollEvent(evnt)) {
 			switch (evnt.type) {
-				case sf::Event::Closed:
-					window.close();
-					break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 			}
 		}
 
 		//movement functions
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
 			playerVals->RightRotation();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
@@ -106,7 +119,7 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
 			playerVals->SPressed(); //replace with ship move functions (note y-axis is inverted)
 		}
-	
+
 		//generate bullet when key is pressed with a cooldown
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
 			if (startBullet.getElapsedTime() >= bulletSpawnRate)
@@ -128,13 +141,14 @@ int main()
 		}
 
 		//check to see if any asteroids crashed against the ship
-		for (int i=0; i<countAsteroid; i++)
+		for (int i = 0; i < countAsteroid; i++)
 		{
 			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
 				asteroidPtrArray[i]->hitFlag = true;
-			
 				asteroidPtrArray[i]->asteroidHit.restart();
+
+				countLives--;
 
 				asteroidPtrArray[i]->loseLives();
 				playerVals->loseLives(asteroidPtrArray[i]->damage);
@@ -157,7 +171,7 @@ int main()
 
 				asteroidPtrArray[i]->loseLives();
 				planetVals->loseLives(asteroidPtrArray[i]->damage);
-				
+
 				if (planetVals->health < 1)
 				{
 					cout << "Planet has been destroyed. You have lost the game!" << endl;
@@ -174,7 +188,7 @@ int main()
 				if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 				{
 					asteroidPtrArray[i]->hitFlag = true;
-					
+
 					asteroidPtrArray[i]->asteroidHit.restart();
 
 					asteroidPtrArray[i]->loseLives();
@@ -220,15 +234,15 @@ int main()
 		}
 
 		//update functions for graphics
-		updatePlayer(player, playerVals); 
+		updatePlayer(player, playerVals);
 		updatePlanet(planet, planetTexture, planetVals, planetTime);
 		planetVals->planetShake();
 
-		for (int i = 0; i < countBullet; i++) {
+		for (int i = 0; i < countBullet; i++) { //bullet update
 			updateBullet(bulletPtrArray[i]);
 		}
 
-		for (int i = 0; i < countAsteroid; i++) {
+		for (int i = 0; i < countAsteroid; i++) { //asteroid update
 			updateAsteroid(asteroidPtrArray[i]);
 
 			if (asteroidPtrArray[i]->hitFlag == true)
@@ -240,7 +254,7 @@ int main()
 
 		//drawing functions
 		loadBackground(background, backgroundTexture, backgroundTime);
-		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid);
+		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives);
 	}
 
 	return 0;

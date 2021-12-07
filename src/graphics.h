@@ -8,6 +8,7 @@
 #include "Planet.h"
 #include "Bullet.h"
 #include "Asteroid.h"
+#include "lives.h"
 
 using namespace sf;
 
@@ -18,16 +19,15 @@ void loadBackground(RectangleShape &background, Texture &backgroundTexture, doub
 void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship, RectangleShape &planet, Texture &planetTexture, Planet * planetVals);
 
 //draws the screen each frame
-void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid);
+void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid, Lives * livesPtrArray[], int lifeCount);
+void drawLives(RenderWindow &window, Lives * livesPtrArray[], int lifeCount);
 
 //each update function updates values for the draw function
 void updatePlayer(RectangleShape &player, Ship *ship);
 void updatePlanet(RectangleShape &planet, Texture &planetTexture, Planet * planetVals, double &gameTime);
 void updateBullet(Bullet * bullet);
 void updateAsteroid(Asteroid * asteroid);
-
-//changes asteroid texture
-//void asteroidDestroyedAnimation(Asteroid * asteroid, Time animationSpeed);
+void setLives(Lives * life, int lifeNum);
 
 //makes asteroid harmless so animation can play, then handles movement of all pointers
 void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int currentAsteroid, Time animationSpeed);

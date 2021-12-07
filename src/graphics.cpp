@@ -51,12 +51,16 @@ void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship
 	planet.setPosition(planetVals->xLocation, planetVals->yLocation);
 }
 
-void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid) {
+void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid, Lives * livesPtrArray[], int lifeCount) {
 	window.clear(); //clear buffer
 
 	window.draw(background); //background must be drawn first'
 
 	window.draw(planet);
+
+	for (int i = 0; i < lifeCount; i++) {
+		window.draw(livesPtrArray[i]->livesSprite);
+	}
 
 	for (int i = 0; i < countBullet; i++) {
 		window.draw(bulletPtrArray[i]->bulletSprite);
@@ -140,6 +144,10 @@ void updateAsteroid(Asteroid * asteroid) { //run during main to update asteroid 
 	return;
 }
 
+void setLives(Lives * life, int lifeNum) {
+		life->xLocation = life->xLocation - (life->size * lifeNum + 20);
+		life->livesSprite.setPosition(life->xLocation, life->yLocation);
+}
 
 void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int currentAsteroid, Time animationSpeed) {
 	asteroidPtrArray[currentAsteroid]->yTraj = 0; //asteroid stops moving
