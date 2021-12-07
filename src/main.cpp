@@ -101,7 +101,20 @@ int main()
 		//update location of each bullet
 		for (int i=0; i<countBullet; i++)
 		{
-			bullet[i]->update();
+			bullet[i]->update();			
+		}
+		
+		//delete bullet if out of screen
+		for (int i=0; i<countBullet; i++)
+		{
+			if (bullet[i]->IsOut() == true)
+			{
+				for (int k=i; k<countBullet; k++)
+				{
+					bullet[k] = bullet[k+1];
+				}
+				countBullet--;	
+			}
 		}
 		
 		//update location of each asteroid
