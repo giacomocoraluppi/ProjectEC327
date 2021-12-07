@@ -62,7 +62,9 @@ void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &
 
 	window.draw(player);
 
-	//put asteroid spawn command here
+	for (int i = 0; i < countAsteroid; i++) {
+		window.draw(asteroidPtrArray[i]->asteroidSprite);
+	}
 
 	window.draw(planet);
 
@@ -129,7 +131,8 @@ void updateBulllet(Bullet * bullet) { //run during main to update bullet locatio
 }
 
 void updateAsteroid(Asteroid * asteroid) { //run during main to update asteroid locations
-	//asteroid->update();
-	//asteroid->asteroidSprite.setPosition(asteroid->xLocation, asteroid->yLocation);
+	asteroid->update();
+	asteroid->asteroidSprite.setPosition(asteroid->xLocation, asteroid->yLocation);
+	asteroid->asteroidSprite.setRotation(asteroid->angle);
 	return;
 }

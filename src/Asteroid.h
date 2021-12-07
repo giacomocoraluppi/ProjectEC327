@@ -17,6 +17,7 @@ public:
 	int health;
 	int speed;
 	int size;
+	float angle;
 	float rotation;
 
 	float xLocation;

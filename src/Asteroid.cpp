@@ -12,10 +12,8 @@ Asteroid::Asteroid()
 	int yDestMax = ySpawnMax * 3 / 4;
 	int yDestMin = ySpawnMax * 1 / 4;
 
-	int size = 30;
-	float rotation = 0;
+	int size = 100;
 
-	
 	//intialize random seed
 	srand(time(NULL));
 	
@@ -24,8 +22,16 @@ Asteroid::Asteroid()
 	int xSpawn;
 	int ySpawn;
 
-	sf::RectangleShape asteroidSprite(sf::Vector2f(size, size));
-	sf::Texture asteroidTexture;
+	sf::RectangleShape tempSprite(sf::Vector2f(size, size));
+	sf::Texture tempTexture;
+
+	asteroidTexture = tempTexture;
+
+	asteroidTexture.loadFromFile("graphics/asteroid2.png");
+	tempSprite.setTexture(&asteroidTexture);
+	tempSprite.setOrigin(size / 2, size / 2);
+
+	asteroidSprite = tempSprite;
 
 	//choose texture randomly
 	//getting location where asteroid is spawning from
@@ -34,24 +40,25 @@ Asteroid::Asteroid()
 		//asteroid comes from right side of screen
 		xSpawn = xSpawnMax;
 		ySpawn = rand() % (ySpawnMax - ySpawnMin) + ySpawnMin;
-		asteroidTexture.loadFromFile("graphics/asteroid2.png");
+		rotation = -.5;
+		angle = 90;
 	}
 	else if (random == 2)
 	{
 		//asteroid comes from top side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMax;
-		asteroidTexture.loadFromFile("graphics/asteroid3.png");
+		rotation = .08;
+		angle = 0;
 	}
 	else if (random == 3)
 	{
 		//asteroid comes from bottom side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMin;
-		asteroidTexture.loadFromFile("graphics/asteroid3.png");
+		rotation = 1;
+		angle = 35;
 	}
-
-	asteroidSprite.setTexture(&asteroidTexture);
 	
 	//getting location for destination of asteroid
 	int xDest = 30;
@@ -64,13 +71,15 @@ Asteroid::Asteroid()
 	
 	//initialize health and speed of asteroid
 	health = 1;
-	speed = 50;
+	speed = 3;
 	
 	xTraj = speed * xTraj / totalTraj;
 	yTraj = speed * yTraj / totalTraj;
 	
 	xLocation = xSpawn;
 	yLocation = ySpawn;
+
+	asteroidSprite.setPosition(xLocation, yLocation);
 	
 	/*
 	cout << "Asteroid created" << endl;
@@ -89,10 +98,13 @@ void Asteroid::update()
 {
 	xLocation = xLocation + xTraj;
 	yLocation = yLocation + yTraj;
+	angle = angle + rotation;
 	
+	/*
 	cout << "Asteroid updated" << endl;
 	cout << "xLocation: " << xLocation << endl;
 	cout << "yLocation: " << yLocation << endl;
+	*/
 }
 
 void Asteroid::loseLives()

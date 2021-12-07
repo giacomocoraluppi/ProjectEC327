@@ -19,14 +19,14 @@ int main()
 	Planet* planetVals = new Planet();
 	
 	
-	Bullet* bulletPtrArray[100] = {};
-	for (int i = 0; i < 100; i++)
+	Bullet* bulletPtrArray[500] = {};
+	for (int i = 0; i < 500; i++)
 	{
 		bulletPtrArray[i] = new Bullet(0, 0, 90);
 	}
 
-	Asteroid* asteroidPtrArray[100] = {};
-	for (int i = 0; i < 100; i++)
+	Asteroid* asteroidPtrArray[500] = {};
+	for (int i = 0; i < 500; i++)
 	{
 		asteroidPtrArray[i] = new Asteroid();
 	}
@@ -102,9 +102,6 @@ int main()
 			startBullet = time(NULL);
 			bulletPtrArray[countBullet] = new Bullet(playerVals->xLocation, playerVals->yLocation, playerVals->angle);
 
-			//test output
-			cout << "New bullet " << countBullet << " generated at (" << bulletPtrArray[countBullet]->xLocation << ", " << bulletPtrArray[countBullet]->yLocation << ")." << endl;
-			
 			countBullet++;
 		}
 
@@ -127,9 +124,12 @@ int main()
 			updateBulllet(bulletPtrArray[i]);
 		}
 
+		for (int i = 0; i < countAsteroid; i++) {
+			updateAsteroid(asteroidPtrArray[i]);
+		}
+
 		//drawing functions
 		loadBackground(background, backgroundTexture, backgroundTime);
-
 		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid);
 	}
 
