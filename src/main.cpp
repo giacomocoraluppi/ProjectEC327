@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "Bullet.h"
 
+#include <chrono>
 #include <string>
 #include <cmath>
 #include <sstream>
@@ -11,7 +12,7 @@
 #include <ctime>
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -42,33 +43,48 @@ int main()
 	{
 		asteroid[i] = new Asteroid();
 	}
-	double startAsteroid = time(NULL);
-	double startBullet = time(NULL);
-	double nowAsteroid = 0.0;
-	double nowBullet = 0.0;
+	
+	std::chrono::steady_clock::time_point startAsteroid = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point startBullet = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowAsteroid = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowBullet = std::chrono::steady_clock::now();
 	int countAsteroid = 0;
 	int countBullet = 0;
+	
+	std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowTime = std::chrono::steady_clock::now();
+	int respawnTime = 1000;
+	
 	while (true)
 	{
-		nowAsteroid = time(NULL) - startAsteroid;
-		nowBullet = time(NULL) - startBullet;
+		nowAsteroid = std::chrono::steady_clock::now();
+		nowBullet = std::chrono::steady_clock::now();
+		nowTime = std::chrono::steady_clock::now();
 		
-		//every 3 seconds spawn a new asteroid
-		if (nowAsteroid >= 3)
+		//every 15 seconds decrease respawn time by 200 milliseconds
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowTime-startTime).count() >= 5000)
 		{
-			startAsteroid = time(NULL);
-			asteroid[countAsteroid] = new Asteroid();
-			countAsteroid++;
-			//cout << "new asteroid" << endl;
+			startTime = std::chrono::steady_clock::now();
+			respawnTime = respawnTime - 50;
+			cout << "respawn time in milliseconds: " << respawnTime << endl;
 		}
 		
-		//every 1 seconds shoot a new bullet
-		if (nowBullet >= 1)
+		//every 3*respawnTime milliseconds spawn a new asteroid
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowAsteroid-startAsteroid).count() >= 3*respawnTime)
 		{
-			startBullet = time(NULL);
+			startAsteroid = std::chrono::steady_clock::now();
+			asteroid[countAsteroid] = new Asteroid();
+			cout << "new asteroid" << countAsteroid << endl;
+			countAsteroid++;
+		}
+		
+		//every 1*respawnTime milliseconds shoot a new bullet
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowBullet-startBullet).count() >= 1*respawnTime)
+		{
+			startBullet = std::chrono::steady_clock::now();
 			bullet[countBullet] = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
+			cout << "new bullet" << countBullet << endl;
 			countBullet++;
-			//cout << "new bullet" << endl;
 		}
 		
 		//update rotation and location of ship
@@ -85,7 +101,20 @@ int main()
 		//update location of each bullet
 		for (int i=0; i<countBullet; i++)
 		{
-			bullet[i]->update();
+			bullet[i]->update();			
+		}
+		
+		//delete bullet if out of screen
+		for (int i=0; i<countBullet; i++)
+		{
+			if (bullet[i]->IsOut() == true)
+			{
+				for (int k=i; k<countBullet; k++)
+				{
+					bullet[k] = bullet[k+1];
+				}
+				countBullet--;	
+			}
 		}
 		
 		//update location of each asteroid
@@ -103,7 +132,11 @@ int main()
 				thePlanet->loseLives();
 				if (asteroid[i]->health < 1)
 				{
-					delete asteroid[i];
+					for (int k=i; k<countAsteroid; k++)
+					{
+						asteroid[k] = asteroid[k+1];
+					}
+					countAsteroid--;
 				}
 				if (thePlanet->health < 1)
 				{
@@ -122,7 +155,11 @@ int main()
 				theShip->loseLives();
 				if (asteroid[i]->health < 1)
 				{
-					delete asteroid[i];
+					for (int k=i; k<countAsteroid; k++)
+					{
+						asteroid[k] = asteroid[k+1];
+					}
+					countAsteroid--;
 				}
 				if (theShip->health < 1)
 				{
@@ -143,11 +180,19 @@ int main()
 					bullet[j]->loseLives();
 					if (asteroid[i]->health < 1)
 					{
-						delete asteroid[i];
+						for (int k=i; k<countAsteroid; k++)
+						{
+							asteroid[k] = asteroid[k+1];
+						}
+						countAsteroid--;
 					}
 					if (bullet[j]->health < 1)
 					{
-						delete bullet[j];
+						for (int k=j; k<countBullet; k++)
+						{
+							bullet[k] = bullet[k+1];
+						}
+						countBullet--;
 					}
 				}
 			}
