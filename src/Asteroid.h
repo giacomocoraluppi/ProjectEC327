@@ -28,6 +28,8 @@ public:
 	double xTraj;
 	double yTraj;
 
+	bool hitFlag;
+
 	sf::RectangleShape asteroidSprite;
 	sf::Texture asteroidTexture;
 	sf::Clock asteroidHit;

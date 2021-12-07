@@ -13,6 +13,8 @@ Asteroid::Asteroid()
 	int yDestMin = ySpawnMax * 1 / 4;
 
 	int size = 100;
+	
+	hitFlag = false;
 
 	//intialize random seed
 	srand(time(NULL));

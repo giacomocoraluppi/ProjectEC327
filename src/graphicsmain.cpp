@@ -131,19 +131,15 @@ int main()
 		//check to see if any asteroids crashed against the ship
 		for (int i=0; i<countAsteroid; i++)
 		{
-			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true)
+			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
+				asteroidPtrArray[i]->hitFlag = true;
+			
+				asteroidPtrArray[i]->asteroidHit.restart();
+
 				asteroidPtrArray[i]->loseLives();
 				playerVals->loseLives(asteroidPtrArray[i]->damage);
-				if (asteroidPtrArray[i]->health < 1)
-				{
-					delete asteroidPtrArray[i];
-					for (int k=i; k < countAsteroid; k++)
-					{
-						asteroidPtrArray[k] = asteroidPtrArray[k+1];
-					}
-					countAsteroid--;
-				}
+
 				if (playerVals->health < 1)
 				{
 					cout << "Planet has been destroyed. You have lost the game!" << endl;
@@ -155,8 +151,18 @@ int main()
 		//check to see if any asteroids crashed against the planet 
 		for (int i = 0; i < countAsteroid; i++)
 		{
-			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true)
+			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
+				asteroidPtrArray[i]->hitFlag = true;
+
+				asteroidPtrArray[i]->asteroidHit.restart();
+
+				/*
+				asteroidPtrArray[i]->yTraj = 0; //asteroid stops moving
+				asteroidPtrArray[i]->xTraj = 0; //asteroid stops moving
+				asteroidPtrArray[i]->damage = 0; //asteroid no longer does damage
+				*/
+
 				asteroidPtrArray[i]->loseLives();
 				planetVals->loseLives(asteroidPtrArray[i]->damage);
 				
@@ -173,8 +179,10 @@ int main()
 		{
 			for (int j = 0; j < countBullet; j++)
 			{
-				if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true)
+				if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 				{
+					asteroidPtrArray[i]->hitFlag = true;
+					
 					asteroidPtrArray[i]->asteroidHit.restart();
 
 					asteroidPtrArray[i]->loseLives();
@@ -224,13 +232,13 @@ int main()
 		updatePlanet(planet, planetTexture, planetTime);
 
 		for (int i = 0; i < countBullet; i++) {
-			updateBulllet(bulletPtrArray[i]);
+			updateBullet(bulletPtrArray[i]);
 		}
 
 		for (int i = 0; i < countAsteroid; i++) {
 			updateAsteroid(asteroidPtrArray[i]);
 
-			if (asteroidPtrArray[i]->health < 1)
+			if (asteroidPtrArray[i]->hitFlag == true)
 			{
 				asteroidCollision(asteroidPtrArray, countAsteroid, i, asteroidAnimationSpeed);
 				asteroidPtrArray[i]->asteroidDestroyedAnimation(asteroidAnimationSpeed);

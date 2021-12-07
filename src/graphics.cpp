@@ -54,7 +54,9 @@ void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship
 void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid) {
 	window.clear(); //clear buffer
 
-	window.draw(background); //background must be drawn first
+	window.draw(background); //background must be drawn first'
+
+	window.draw(planet);
 
 	for (int i = 0; i < countBullet; i++) {
 		window.draw(bulletPtrArray[i]->bulletSprite);
@@ -65,8 +67,6 @@ void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &
 	for (int i = 0; i < countAsteroid; i++) {
 		window.draw(asteroidPtrArray[i]->asteroidSprite);
 	}
-
-	window.draw(planet);
 
 	window.display(); //display drawn objects
 }
@@ -124,7 +124,7 @@ void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTi
 	return;
 }
 
-void updateBulllet(Bullet * bullet) { //run during main to update bullet locations
+void updateBullet(Bullet * bullet) { //run during main to update bullet locations
 	bullet->update();
 	bullet->bulletSprite.setPosition(bullet->xLocation, bullet->yLocation);
 	return;
@@ -141,10 +141,7 @@ void updateAsteroid(Asteroid * asteroid) { //run during main to update asteroid 
 void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int currentAsteroid, Time animationSpeed) {
 	asteroidPtrArray[currentAsteroid]->yTraj = 0; //asteroid stops moving
 	asteroidPtrArray[currentAsteroid]->xTraj = 0; //asteroid stops moving
-
 	asteroidPtrArray[currentAsteroid]->damage = 0; //asteroid no longer does damage
-
-	cout << "Function called" << endl;
 
 	if (asteroidPtrArray[currentAsteroid]->asteroidHit.getElapsedTime() > animationSpeed) {
 
@@ -153,7 +150,6 @@ void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int cu
 		for (int k = currentAsteroid; k < countAsteroid; k++)
 		{
 			asteroidPtrArray[k] = asteroidPtrArray[k + 1]; //shift all pointers
-			std::cout << "Pointer " << k << " shifted." << endl;
 		}
 		countAsteroid--;
 
