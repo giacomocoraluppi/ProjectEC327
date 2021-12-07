@@ -12,7 +12,7 @@ Planet::Planet()
     yLocation = 540;
 }
 
-void Planet::loseLives()
+void Planet::loseLives(int damage)
 {
-    health--;
+	health = health - damage;
 }

@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <time.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -17,6 +18,8 @@ public:
 	int health;
 	int speed;
 	int size;
+	int damage;
+
 	float angle;
 	float rotation;
 
@@ -24,12 +27,16 @@ public:
 	float yLocation;
 	double xTraj;
 	double yTraj;
+
 	sf::RectangleShape asteroidSprite;
 	sf::Texture asteroidTexture;
+	sf::Clock asteroidHit;
 
 	Asteroid();
 	void update();
 	void loseLives();
+
+	void asteroidDestroyedAnimation(sf::Time animationSpeed);
 };
 	
 #endif

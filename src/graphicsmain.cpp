@@ -57,7 +57,6 @@ int main()
 	loadBaseTextures(player, playerTexture, playerVals, planet, planetTexture, planetVals);
 
 	//set timers before game
-	//TEST CODE
 	sf::Clock startBullet;
 	sf::Time bulletSpawnRate = sf::milliseconds(300);
 
@@ -69,7 +68,6 @@ int main()
 	int currentDifficulty = 1;
 	int difficultyMax = 10;
 
-	//double startAsteroid = time(NULL);
 	double backgroundTime = time(NULL);
 	double planetTime = time(NULL);
 
@@ -79,6 +77,9 @@ int main()
 
 	double nowAsteroid = 0.0;
 	double nowBullet = 0.0;
+
+	//set animation speed
+	sf::Time asteroidAnimationSpeed = sf::milliseconds(300);
 
 	//game loop
 	while (window.isOpen()) {
@@ -133,9 +134,10 @@ int main()
 			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true)
 			{
 				asteroidPtrArray[i]->loseLives();
-				playerVals->loseLives();
+				playerVals->loseLives(asteroidPtrArray[i]->damage);
 				if (asteroidPtrArray[i]->health < 1)
 				{
+					delete asteroidPtrArray[i];
 					for (int k=i; k < countAsteroid; k++)
 					{
 						asteroidPtrArray[k] = asteroidPtrArray[k+1];
@@ -156,16 +158,8 @@ int main()
 			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true)
 			{
 				asteroidPtrArray[i]->loseLives();
-				planetVals->loseLives();
+				planetVals->loseLives(asteroidPtrArray[i]->damage);
 				
-				if (asteroidPtrArray[i]->health < 1)
-				{
-					for (int k = i; k < countAsteroid; k++)
-					{
-						asteroidPtrArray[k] = asteroidPtrArray[k + 1];
-					}
-					countAsteroid--;
-				}
 				if (planetVals->health < 1)
 				{
 					cout << "Planet has been destroyed. You have lost the game!" << endl;
@@ -181,27 +175,25 @@ int main()
 			{
 				if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true)
 				{
+					asteroidPtrArray[i]->asteroidHit.restart();
+
 					asteroidPtrArray[i]->loseLives();
 					bulletPtrArray[j]->loseLives();
-					if (asteroidPtrArray[i]->health < 1)
+				}
+
+				if (bulletPtrArray[j]->health < 1)
+				{
+					delete bulletPtrArray[j];
+
+					for (int k = j; k < countBullet; k++)
 					{
-						for (int k = i; k < countAsteroid; k++)
-						{
-							asteroidPtrArray[k] = asteroidPtrArray[k + 1];
-						}
-						countAsteroid--;
+						bulletPtrArray[k] = bulletPtrArray[k + 1];
 					}
-					if (bulletPtrArray[j]->health < 1)
-					{
-						for (int k = j; k < countBullet; k++)
-						{
-							bulletPtrArray[k] = bulletPtrArray[k + 1];
-						}
-						countBullet--;
-					}
+					countBullet--;
 				}
 			}
 		}
+
 
 		//delete bullet if out of screen
 		for (int i = 0; i < countBullet; i++)
@@ -237,6 +229,12 @@ int main()
 
 		for (int i = 0; i < countAsteroid; i++) {
 			updateAsteroid(asteroidPtrArray[i]);
+
+			if (asteroidPtrArray[i]->health < 1)
+			{
+				asteroidCollision(asteroidPtrArray, countAsteroid, i, asteroidAnimationSpeed);
+				asteroidPtrArray[i]->asteroidDestroyedAnimation(asteroidAnimationSpeed);
+			}
 		}
 
 		//drawing functions

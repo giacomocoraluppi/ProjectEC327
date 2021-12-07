@@ -24,7 +24,7 @@ public:
 	void WPressed();
 	void SPressed();
 	void update();
-	void loseLives();
+	void loseLives(int damage);
 };
 
 #endif

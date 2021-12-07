@@ -27,11 +27,7 @@ Asteroid::Asteroid()
 
 	asteroidTexture = tempTexture;
 
-	asteroidTexture.loadFromFile("graphics/asteroid2.png");
-	tempSprite.setTexture(&asteroidTexture);
-	tempSprite.setOrigin(size / 2, size / 2);
-
-	asteroidSprite = tempSprite;
+	
 
 	//choose texture randomly
 	//getting location where asteroid is spawning from
@@ -40,24 +36,31 @@ Asteroid::Asteroid()
 		//asteroid comes from right side of screen
 		xSpawn = xSpawnMax;
 		ySpawn = rand() % (ySpawnMax - ySpawnMin) + ySpawnMin;
+
+		asteroidTexture.loadFromFile("graphics/asteroid3.png");
 		rotation = -.5;
 		angle = 90;
 	}
 	else if (random == 2)
 	{
-		//asteroid comes from top side of screen
+		//asteroid comes from bottom side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMax;
-		rotation = .08;
+
+		asteroidTexture.loadFromFile("graphics/asteroid2.png");
+		rotation = .4;
 		angle = 0;
+		
 	}
 	else if (random == 3)
 	{
-		//asteroid comes from bottom side of screen
+		//asteroid comes from top side of screen
 		xSpawn = rand() % (xSpawnMax - xSpawnMin) + xSpawnMin;
 		ySpawn = ySpawnMin;
-		rotation = 1;
-		angle = 35;
+
+		asteroidTexture.loadFromFile("graphics/asteroid2.png");
+		rotation = .9;
+		angle = 90;
 	}
 	
 	//getting location for destination of asteroid
@@ -72,12 +75,18 @@ Asteroid::Asteroid()
 	//initialize health and speed of asteroid
 	health = 1;
 	speed = 3;
+	damage = 1;
 	
 	xTraj = speed * xTraj / totalTraj;
 	yTraj = speed * yTraj / totalTraj;
 	
 	xLocation = xSpawn;
 	yLocation = ySpawn;
+
+	tempSprite.setTexture(&asteroidTexture);
+	tempSprite.setOrigin(size / 2, size / 2);
+
+	asteroidSprite = tempSprite;
 
 	asteroidSprite.setPosition(xLocation, yLocation);
 	
@@ -99,6 +108,8 @@ void Asteroid::update()
 	xLocation = xLocation + xTraj;
 	yLocation = yLocation + yTraj;
 	angle = angle + rotation;
+
+	//cout << "Asteroid time: " << asteroidHit.getElapsedTime().asMilliseconds() << endl;
 	
 	/*
 	cout << "Asteroid updated" << endl;
@@ -110,4 +121,29 @@ void Asteroid::update()
 void Asteroid::loseLives()
 {
     health--;
+}
+
+void Asteroid::asteroidDestroyedAnimation(sf::Time animationSpeed) {
+	sf::Time animationChange3 = animationSpeed;
+	sf::Time animationChange2 = animationSpeed - sf::milliseconds(100);
+	sf::Time animationChange1 = animationSpeed - sf::milliseconds(200);
+
+	if (animationChange1.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //second frame
+	sf::Texture tempTexture;
+		tempTexture.loadFromFile("graphics/asteroidExplodeframe1.png");
+		asteroidTexture = tempTexture;
+	}
+
+	else if (animationChange2.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //second frame
+	sf::Texture tempTexture;
+		tempTexture.loadFromFile("graphics/asteroidExplodeframe2.png");
+		asteroidTexture = tempTexture;
+	}
+
+	else if (animationChange3.asMilliseconds() > asteroidHit.getElapsedTime().asMilliseconds()) { //first frame
+		sf::Texture tempTexture;
+		tempTexture.loadFromFile("graphics/asteroidExplodeframe3.png");
+		asteroidTexture = tempTexture;
+	}
+	return;
 }

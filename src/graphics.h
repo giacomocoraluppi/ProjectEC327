@@ -26,4 +26,10 @@ void updatePlanet(RectangleShape &planet, Texture &planetTexture, double &gameTi
 void updateBulllet(Bullet * bullet);
 void updateAsteroid(Asteroid * asteroid);
 
+//changes asteroid texture
+//void asteroidDestroyedAnimation(Asteroid * asteroid, Time animationSpeed);
+
+//makes asteroid harmless so animation can play, then handles movement of all pointers
+void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int currentAsteroid, Time animationSpeed);
+
 #endif //include guard

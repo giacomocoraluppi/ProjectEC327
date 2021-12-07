@@ -72,7 +72,7 @@ void Ship::update()
 	return;
 }
 
-void Ship::loseLives()
+void Ship::loseLives(int damage)
 {
-    health--;
+    health = health - damage;
 }

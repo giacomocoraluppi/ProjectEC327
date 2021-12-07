@@ -11,7 +11,7 @@ public:
     float yLocation;
 
     Planet();
-    void loseLives();
+    void loseLives(int damage);
 };
 
 #endif

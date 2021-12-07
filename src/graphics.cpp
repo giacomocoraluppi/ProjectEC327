@@ -136,3 +136,26 @@ void updateAsteroid(Asteroid * asteroid) { //run during main to update asteroid 
 	asteroid->asteroidSprite.setRotation(asteroid->angle);
 	return;
 }
+
+
+void asteroidCollision(Asteroid * asteroidPtrArray[], int &countAsteroid, int currentAsteroid, Time animationSpeed) {
+	asteroidPtrArray[currentAsteroid]->yTraj = 0; //asteroid stops moving
+	asteroidPtrArray[currentAsteroid]->xTraj = 0; //asteroid stops moving
+
+	asteroidPtrArray[currentAsteroid]->damage = 0; //asteroid no longer does damage
+
+	cout << "Function called" << endl;
+
+	if (asteroidPtrArray[currentAsteroid]->asteroidHit.getElapsedTime() > animationSpeed) {
+
+		delete asteroidPtrArray[currentAsteroid]; //free up memory of current asteroid
+
+		for (int k = currentAsteroid; k < countAsteroid; k++)
+		{
+			asteroidPtrArray[k] = asteroidPtrArray[k + 1]; //shift all pointers
+			std::cout << "Pointer " << k << " shifted." << endl;
+		}
+		countAsteroid--;
+
+	}
+}
