@@ -12,7 +12,7 @@
 #include <ctime>
 #include <iostream>
 
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -74,8 +74,8 @@ int main()
 		{
 			startAsteroid = std::chrono::steady_clock::now();
 			asteroid[countAsteroid] = new Asteroid();
+			cout << "new asteroid" << countAsteroid << endl;
 			countAsteroid++;
-			cout << "new asteroid" << endl;
 		}
 		
 		//every 1*respawnTime milliseconds shoot a new bullet
@@ -83,8 +83,8 @@ int main()
 		{
 			startBullet = std::chrono::steady_clock::now();
 			bullet[countBullet] = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
+			cout << "new bullet" << countBullet << endl;
 			countBullet++;
-			cout << "new bullet" << endl;
 		}
 		
 		//update rotation and location of ship
@@ -119,7 +119,11 @@ int main()
 				thePlanet->loseLives();
 				if (asteroid[i]->health < 1)
 				{
-					delete asteroid[i];
+					for (int k=i; k<countAsteroid; k++)
+					{
+						asteroid[k] = asteroid[k+1];
+						countAsteroid--;
+					}
 				}
 				if (thePlanet->health < 1)
 				{
@@ -138,7 +142,11 @@ int main()
 				theShip->loseLives();
 				if (asteroid[i]->health < 1)
 				{
-					delete asteroid[i];
+					for (int k=i; k<countAsteroid; k++)
+					{
+						asteroid[k] = asteroid[k+1];
+						countAsteroid--;
+					}
 				}
 				if (theShip->health < 1)
 				{
@@ -159,11 +167,19 @@ int main()
 					bullet[j]->loseLives();
 					if (asteroid[i]->health < 1)
 					{
-						delete asteroid[i];
+						for (int k=i; k<countAsteroid; k++)
+						{
+							asteroid[k] = asteroid[k+1];
+							countAsteroid--;
+						}
 					}
 					if (bullet[j]->health < 1)
 					{
-						delete bullet[j];
+						for (int k=j; k<countBullet; k++)
+						{
+							bullet[k] = bullet[k+1];
+							countBullet--;
+						}
 					}
 				}
 			}
