@@ -8,7 +8,7 @@ Protect the Planet is an entertainment game made for EC327 as a way to demonstra
 
 How to Build:
 This program requires SFML to run (A multimedia library for C++).
-SFML can be downloaded from www.sfml-dev.org or through Microsoft Visual Studios.
+SFML can be downloaded from www.sfml-dev.org.
 Compile the code and run the executable.
 
 Youtube link:
