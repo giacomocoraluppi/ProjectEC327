@@ -5,7 +5,7 @@ using namespace std;
 Ship::Ship()
 {
 	//initialize health and speed of ship
-	health = 10;
+	health = 3;
 	moveSpeed = 2;
 	rotationSpeed = 2;
 

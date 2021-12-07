@@ -10,6 +10,18 @@
 
 using namespace std;
 
+bool dist(int x1, int y1, int x2, int y2, int max)
+{
+	if (sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2)) < max)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Protect the Planet", sf::Style::Fullscreen | sf::Style::Close);
@@ -31,16 +43,6 @@ int main()
 		asteroidPtrArray[i] = new Asteroid();
 	}
 
-	// /*TEST CODE
-	sf::RectangleShape bulletTest(sf::Vector2f(5, 20));
-	sf::Texture bulletTexture;
-
-	bulletTexture.loadFromFile("graphics/playerBeam.png");
-	bulletTest.setTexture(&bulletTexture);
-
-	bulletTest.setPosition(540, 700);
-	// */
-
 	//declare objects
 	sf::RectangleShape background(sf::Vector2f(1920, 1080));
 	sf::Texture backgroundTexture;
@@ -55,8 +57,14 @@ int main()
 	loadBaseTextures(player, playerTexture, playerVals, planet, planetTexture, planetVals);
 
 	//set timers before game
-	double startAsteroid = time(NULL);
-	double startBullet = time(NULL);
+	//TEST CODE
+	sf::Clock startBullet;
+	sf::Time bulletSpawnRate = sf::milliseconds(1000);
+
+	sf::Clock startAsteroid;
+	sf::Time AsteroidSpawnRate = sf::milliseconds(3000);
+
+	//double startAsteroid = time(NULL);
 	double backgroundTime = time(NULL);
 	double planetTime = time(NULL);
 
@@ -95,25 +103,89 @@ int main()
 		}
 	
 		//randomly generate bullets
-		nowBullet = time(NULL) - startBullet;
-
-		if (nowBullet >= 1)
+		if (startBullet.getElapsedTime() >= bulletSpawnRate)
 		{
-			startBullet = time(NULL);
+			startBullet.restart();
 			bulletPtrArray[countBullet] = new Bullet(playerVals->xLocation, playerVals->yLocation, playerVals->angle);
 
 			countBullet++;
 		}
 
-
 		//randmly generate asteroids
-		nowAsteroid = time(NULL) - startAsteroid;
-
-		if (nowAsteroid >= 3)
+		if (startAsteroid.getElapsedTime() >= AsteroidSpawnRate)
 		{
-			startAsteroid = time(NULL);
+			startAsteroid.restart();
 			asteroidPtrArray[countAsteroid] = new Asteroid();
+
 			countAsteroid++;
+		}
+
+		//check to see if any asteroids crashed against the ship
+		for (int i=0; i<countAsteroid; i++)
+		{
+			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true)
+			{
+				asteroidPtrArray[i]->loseLives();
+				playerVals->loseLives();
+				if (asteroidPtrArray[i]->health < 1)
+				{
+					delete asteroidPtrArray[i];
+					for (int k=i; k < countAsteroid; k++)
+					{
+						asteroidPtrArray[k] = asteroidPtrArray[k+1];
+						countAsteroid--;
+					}
+				}
+				if (playerVals->health < 1)
+				{
+					cout << "Ship has been destroyed. You have lost the game!" << endl;
+					//need to actually end game
+				}
+			}
+		}
+
+		//check to see if any asteroids have been hit by any bullets
+		for (int i = 0; i < countAsteroid; i++)
+		{
+			for (int j = 0; j < countBullet; j++)
+			{
+				if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true)
+				{
+					asteroidPtrArray[i]->loseLives();
+					bulletPtrArray[j]->loseLives();
+					if (asteroidPtrArray[i]->health < 1)
+					{
+						delete asteroidPtrArray[i];
+						for (int k = i; k < countAsteroid; k++)
+						{
+							asteroidPtrArray[k] = asteroidPtrArray[k + 1];
+							countAsteroid--;
+						}
+					}
+					if (bulletPtrArray[j]->health < 1)
+					{
+						delete bulletPtrArray[j];
+						for (int k = j; k < countBullet; k++)
+						{
+							bulletPtrArray[k] = bulletPtrArray[k + 1];
+							countBullet--;
+						}
+					}
+				}
+			}
+		}
+
+		//delete bullet if out of screen
+		for (int i = 0; i < countBullet; i++)
+		{
+			if (bulletPtrArray[i]->IsOut() == true)
+			{
+				for (int k = i; k < countBullet; k++)
+				{
+					bulletPtrArray[k] = bulletPtrArray[k + 1];
+				}
+				countBullet--;
+			}
 		}
 
 		//update functions for graphics
