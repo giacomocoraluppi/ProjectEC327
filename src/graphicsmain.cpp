@@ -129,12 +129,11 @@ int main()
 				playerVals->loseLives();
 				if (asteroidPtrArray[i]->health < 1)
 				{
-					delete asteroidPtrArray[i];
 					for (int k=i; k < countAsteroid; k++)
 					{
 						asteroidPtrArray[k] = asteroidPtrArray[k+1];
-						countAsteroid--;
 					}
+					countAsteroid--;
 				}
 				if (playerVals->health < 1)
 				{
@@ -155,21 +154,19 @@ int main()
 					bulletPtrArray[j]->loseLives();
 					if (asteroidPtrArray[i]->health < 1)
 					{
-						delete asteroidPtrArray[i];
 						for (int k = i; k < countAsteroid; k++)
 						{
 							asteroidPtrArray[k] = asteroidPtrArray[k + 1];
-							countAsteroid--;
 						}
+						countAsteroid--;
 					}
 					if (bulletPtrArray[j]->health < 1)
 					{
-						delete bulletPtrArray[j];
 						for (int k = j; k < countBullet; k++)
 						{
 							bulletPtrArray[k] = bulletPtrArray[k + 1];
-							countBullet--;
 						}
+						countBullet--;
 					}
 				}
 			}
