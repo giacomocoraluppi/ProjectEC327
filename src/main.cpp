@@ -122,8 +122,8 @@ int main()
 					for (int k=i; k<countAsteroid; k++)
 					{
 						asteroid[k] = asteroid[k+1];
-						countAsteroid--;
 					}
+					countAsteroid--;
 				}
 				if (thePlanet->health < 1)
 				{
@@ -145,8 +145,8 @@ int main()
 					for (int k=i; k<countAsteroid; k++)
 					{
 						asteroid[k] = asteroid[k+1];
-						countAsteroid--;
 					}
+					countAsteroid--;
 				}
 				if (theShip->health < 1)
 				{
@@ -170,16 +170,16 @@ int main()
 						for (int k=i; k<countAsteroid; k++)
 						{
 							asteroid[k] = asteroid[k+1];
-							countAsteroid--;
 						}
+						countAsteroid--;
 					}
 					if (bullet[j]->health < 1)
 					{
 						for (int k=j; k<countBullet; k++)
 						{
 							bullet[k] = bullet[k+1];
-							countBullet--;
 						}
+						countBullet--;
 					}
 				}
 			}
