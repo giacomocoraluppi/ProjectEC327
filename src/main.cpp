@@ -3,6 +3,7 @@
 #include "Planet.h"
 #include "Bullet.h"
 
+#include <chrono>
 #include <string>
 #include <cmath>
 #include <sstream>
@@ -42,33 +43,48 @@ int main()
 	{
 		asteroid[i] = new Asteroid();
 	}
-	double startAsteroid = time(NULL);
-	double startBullet = time(NULL);
-	double nowAsteroid = 0.0;
-	double nowBullet = 0.0;
+	
+	std::chrono::steady_clock::time_point startAsteroid = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point startBullet = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowAsteroid = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowBullet = std::chrono::steady_clock::now();
 	int countAsteroid = 0;
 	int countBullet = 0;
+	
+	std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point nowTime = std::chrono::steady_clock::now();
+	int respawnTime = 1000;
+	
 	while (true)
 	{
-		nowAsteroid = time(NULL) - startAsteroid;
-		nowBullet = time(NULL) - startBullet;
+		nowAsteroid = std::chrono::steady_clock::now();
+		nowBullet = std::chrono::steady_clock::now();
+		nowTime = std::chrono::steady_clock::now();
 		
-		//every 3 seconds spawn a new asteroid
-		if (nowAsteroid >= 3)
+		//every 15 seconds decrease respawn time by 200 milliseconds
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowTime-startTime).count() >= 5000)
 		{
-			startAsteroid = time(NULL);
-			asteroid[countAsteroid] = new Asteroid();
-			countAsteroid++;
-			//cout << "new asteroid" << endl;
+			startTime = std::chrono::steady_clock::now();
+			respawnTime = respawnTime - 50;
+			cout << "respawn time in milliseconds: " << respawnTime << endl;
 		}
 		
-		//every 1 seconds shoot a new bullet
-		if (nowBullet >= 1)
+		//every 3*respawnTime milliseconds spawn a new asteroid
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowAsteroid-startAsteroid).count() >= 3*respawnTime)
 		{
-			startBullet = time(NULL);
+			startAsteroid = std::chrono::steady_clock::now();
+			asteroid[countAsteroid] = new Asteroid();
+			countAsteroid++;
+			cout << "new asteroid" << endl;
+		}
+		
+		//every 1*respawnTime milliseconds shoot a new bullet
+		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowBullet-startBullet).count() >= 1*respawnTime)
+		{
+			startBullet = std::chrono::steady_clock::now();
 			bullet[countBullet] = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
 			countBullet++;
-			//cout << "new bullet" << endl;
+			cout << "new bullet" << endl;
 		}
 		
 		//update rotation and location of ship
