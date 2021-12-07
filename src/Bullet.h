@@ -32,7 +32,7 @@ public:
     Bullet(float, float, float);
     void update(); 
     void loseLives();
-    bool IsOut();
+	bool IsOut();
 };
 
 #endif

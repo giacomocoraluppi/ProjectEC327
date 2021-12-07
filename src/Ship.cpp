@@ -7,7 +7,7 @@ Ship::Ship()
 	//initialize health and speed of ship
 	health = 3;
 	moveSpeed = 2;
-	rotationSpeed = 2;
+	rotationSpeed = 2.5;
 
 	//initialize starting point of ship
 	xLocation = 460;

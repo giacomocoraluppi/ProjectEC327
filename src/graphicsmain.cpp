@@ -59,10 +59,15 @@ int main()
 	//set timers before game
 	//TEST CODE
 	sf::Clock startBullet;
-	sf::Time bulletSpawnRate = sf::milliseconds(1000);
+	sf::Time bulletSpawnRate = sf::milliseconds(300);
 
 	sf::Clock startAsteroid;
 	sf::Time AsteroidSpawnRate = sf::milliseconds(3000);
+
+	sf::Clock difficultyTimer;
+	sf::Time difficultyChangeRate = sf::milliseconds(15000);
+	int currentDifficulty = 1;
+	int difficultyMax = 10;
 
 	//double startAsteroid = time(NULL);
 	double backgroundTime = time(NULL);
@@ -102,13 +107,15 @@ int main()
 			playerVals->SPressed(); //replace with ship move functions (note y-axis is inverted)
 		}
 	
-		//randomly generate bullets
-		if (startBullet.getElapsedTime() >= bulletSpawnRate)
-		{
-			startBullet.restart();
-			bulletPtrArray[countBullet] = new Bullet(playerVals->xLocation, playerVals->yLocation, playerVals->angle);
+		//generate bullet when key is pressed with a cooldown
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+			if (startBullet.getElapsedTime() >= bulletSpawnRate)
+			{
+				startBullet.restart();
+				bulletPtrArray[countBullet] = new Bullet(playerVals->xLocation, playerVals->yLocation, playerVals->angle);
 
-			countBullet++;
+				countBullet++;
+			}
 		}
 
 		//randmly generate asteroids
@@ -133,13 +140,37 @@ int main()
 					for (int k=i; k < countAsteroid; k++)
 					{
 						asteroidPtrArray[k] = asteroidPtrArray[k+1];
-						countAsteroid--;
 					}
+					countAsteroid--;
 				}
 				if (playerVals->health < 1)
 				{
-					cout << "Ship has been destroyed. You have lost the game!" << endl;
+					cout << "Planet has been destroyed. You have lost the game!" << endl;
 					//need to actually end game
+				}
+			}
+		}
+
+		//check to see if any asteroids crashed against the planet 
+		for (int i = 0; i < countAsteroid; i++)
+		{
+			if (dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true)
+			{
+				asteroidPtrArray[i]->loseLives();
+				planetVals->loseLives();
+				
+				if (asteroidPtrArray[i]->health < 1)
+				{
+					for (int k = i; k < countAsteroid; k++)
+					{
+						asteroidPtrArray[k] = asteroidPtrArray[k + 1];
+					}
+					countAsteroid--;
+				}
+				if (planetVals->health < 1)
+				{
+					cout << "Planet has been destroyed. You have lost the game!" << endl;
+					//need to end game here
 				}
 			}
 		}
@@ -159,8 +190,8 @@ int main()
 						for (int k = i; k < countAsteroid; k++)
 						{
 							asteroidPtrArray[k] = asteroidPtrArray[k + 1];
-							countAsteroid--;
 						}
+						countAsteroid--;
 					}
 					if (bulletPtrArray[j]->health < 1)
 					{
@@ -168,8 +199,8 @@ int main()
 						for (int k = j; k < countBullet; k++)
 						{
 							bulletPtrArray[k] = bulletPtrArray[k + 1];
-							countBullet--;
 						}
+						countBullet--;
 					}
 				}
 			}
@@ -185,6 +216,17 @@ int main()
 					bulletPtrArray[k] = bulletPtrArray[k + 1];
 				}
 				countBullet--;
+			}
+		}
+
+		//speeds up the game every 15 seconds
+		if (currentDifficulty < difficultyMax) {
+			if (difficultyTimer.getElapsedTime() >= difficultyChangeRate)
+			{
+				difficultyTimer.restart();
+				AsteroidSpawnRate = AsteroidSpawnRate - sf::milliseconds(200);
+
+				currentDifficulty++;
 			}
 		}
 

@@ -50,17 +50,14 @@ void Bullet::loseLives()
     health--;
 }
 
+
 bool Bullet::IsOut()
 {
     //RESOLUTION_X and RESOLUTION_Y represents the edge of the window
 	// Returns true if the projectile is out of the screen area so we can remove it
-	//if (xLocation < -10 || xLocation > RESOLUTION_X + 10 || yLocation < -10 || yLocation > RESOLUTION_Y + 10)
 	if (xLocation < -10 || xLocation > 1920 + 10 || yLocation < -10 || yLocation > 1080 + 10)
 	{
 		return true;
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
