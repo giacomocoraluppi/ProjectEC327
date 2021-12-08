@@ -72,6 +72,25 @@ int main()
 	planetLivesOnes.setOrigin(15*2, 21*2);
 	planetLivesOnes.setPosition(100, 540);
 
+	//set up score sprites
+	sf::RectangleShape scoreHundredsSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreHundredsTexture;
+	sf::RectangleShape scoreTensSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreTensTexture;
+	sf::RectangleShape scoreOnesSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreOnesTexture;
+
+	scoreHundredsSprite.setOrigin(15 * 2, 21 * 2);
+	scoreHundredsSprite.setPosition(1770, 50);
+
+	scoreTensSprite.setOrigin(15 * 2, 21 * 2);
+	scoreTensSprite.setPosition(1830, 50);
+
+	scoreOnesSprite.setOrigin(15 * 2, 21 * 2);
+	scoreOnesSprite.setPosition(1890, 50);
+
+	int score = 1;
+
 	//set textures before game loop
 	loadBaseTextures(player, playerTexture, playerVals, planet, planetTexture, planetVals);
 
@@ -204,8 +223,9 @@ int main()
 				if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 				{
 					asteroidPtrArray[i]->hitFlag = true;
-
 					asteroidPtrArray[i]->asteroidHit.restart();
+
+					score++;
 
 					asteroidPtrArray[i]->loseLives();
 					bulletPtrArray[j]->loseLives();
@@ -253,6 +273,7 @@ int main()
 		updatePlayer(player, playerVals);
 		updatePlanet(planet, planetTexture, planetVals, planetTime);
 		updatePlanetLives(planetLivesTens, planetLivesOnes, planetLivesTensDigit, planetLivesOnesDigit, countPlanetLives);
+		updateScore(scoreHundredsSprite, scoreTensSprite, scoreOnesSprite, scoreHundredsTexture, scoreTensTexture, scoreOnesTexture, score);
 		planetVals->planetShake();
 
 		for (int i = 0; i < countBullet; i++) { //bullet update
@@ -271,7 +292,7 @@ int main()
 
 		//drawing functions
 		loadBackground(background, backgroundTexture, backgroundTime);
-		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives, planetLivesTens, planetLivesOnes);
+		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives, planetLivesTens, planetLivesOnes, scoreHundredsSprite, scoreTensSprite, scoreOnesSprite);
 	}
 
 	return 0;

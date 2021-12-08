@@ -51,7 +51,7 @@ void loadBaseTextures(RectangleShape &player, Texture &playerTexture, Ship *ship
 	planet.setPosition(planetVals->xLocation, planetVals->yLocation);
 }
 
-void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid, Lives * livesPtrArray[], int lifeCount, RectangleShape &tens, RectangleShape &ones) {
+void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &player, RectangleShape &planet, Bullet * bulletPtrArray[], int countBullet, Asteroid * asteroidPtrArray[], int countAsteroid, Lives * livesPtrArray[], int lifeCount, RectangleShape &tens, RectangleShape &ones, RectangleShape &scoreHundredsSprite, RectangleShape &scoreTensSprite, RectangleShape &scoreOnesSprite) {
 	window.clear(); //clear buffer
 
 	window.draw(background); //background must be drawn first'
@@ -74,6 +74,10 @@ void drawGame(RenderWindow &window, RectangleShape &background, RectangleShape &
 
 	window.draw(tens);
 	window.draw(ones);
+
+	window.draw(scoreHundredsSprite);
+	window.draw(scoreTensSprite);
+	window.draw(scoreOnesSprite);
 
 	window.display(); //display drawn objects
 }
@@ -219,6 +223,119 @@ void updatePlanetLives(RectangleShape &tensSprite, RectangleShape &onesSprite, T
 
 	tensSprite.setTexture(&tens);
 	onesSprite.setTexture(&ones);
+}
+
+void updateScore(RectangleShape &hundredsSprite, RectangleShape &tensSprite, RectangleShape &onesSprite, Texture &hundreds, Texture &tens, Texture &ones, int lives) {
+	lives = lives - 1;
+	
+	int valHundreds = lives / 100;
+	int valTens = ((lives - (valHundreds * 100)) / 10);
+	int valOnes = (lives - ((valHundreds * 100) + (valTens * 10)));
+
+
+	switch (valHundreds) {
+		case 0:
+			hundreds.loadFromFile("graphics/digit0.png");
+			break;
+		case 1:
+			hundreds.loadFromFile("graphics/digit1.png");
+			break;
+		case 2:
+			hundreds.loadFromFile("graphics/digit2.png");
+			break;
+		case 3:
+			hundreds.loadFromFile("graphics/digit3.png");
+			break;
+		case 4:
+			hundreds.loadFromFile("graphics/digit4.png");
+			break;
+		case 5:
+			hundreds.loadFromFile("graphics/digit5.png");
+			break;
+		case 6:
+			hundreds.loadFromFile("graphics/digit6.png");
+			break;
+		case 7:
+			hundreds.loadFromFile("graphics/digit7.png");
+			break;
+		case 8:
+			hundreds.loadFromFile("graphics/digit8.png");
+			break;
+		case 9:
+			hundreds.loadFromFile("graphics/digit9.png");
+			break;
+	}
+
+	switch (valTens) {
+		case 0:
+			tens.loadFromFile("graphics/digit0.png");
+			break;
+		case 1:
+			tens.loadFromFile("graphics/digit1.png");
+			break;
+		case 2:
+			tens.loadFromFile("graphics/digit2.png");
+			break;
+		case 3:
+			tens.loadFromFile("graphics/digit3.png");
+			break;
+		case 4:
+			tens.loadFromFile("graphics/digit4.png");
+			break;
+		case 5:
+			tens.loadFromFile("graphics/digit5.png");
+			break;
+		case 6:
+			tens.loadFromFile("graphics/digit6.png");
+			break;
+		case 7:
+			tens.loadFromFile("graphics/digit7.png");
+			break;
+		case 8:
+			tens.loadFromFile("graphics/digit8.png");
+			break;
+		case 9:
+			tens.loadFromFile("graphics/digit9.png");
+			break;
+	}
+
+	switch (valOnes) {
+		case 0:
+			ones.loadFromFile("graphics/digit0.png");
+			break;
+		case 1:
+			ones.loadFromFile("graphics/digit1.png");
+			break;
+		case 2:
+			ones.loadFromFile("graphics/digit2.png");
+			break;
+		case 3:
+			ones.loadFromFile("graphics/digit3.png");
+			break;
+		case 4:
+			ones.loadFromFile("graphics/digit4.png");
+			break;
+		case 5:
+			ones.loadFromFile("graphics/digit5.png");
+			break;
+		case 6:
+			ones.loadFromFile("graphics/digit6.png");
+			break;
+		case 7:
+			ones.loadFromFile("graphics/digit7.png");
+			break;
+		case 8:
+			ones.loadFromFile("graphics/digit8.png");
+			break;
+		case 9:
+			ones.loadFromFile("graphics/digit9.png");
+			break;
+	}
+
+	hundredsSprite.setTexture(&hundreds);
+	tensSprite.setTexture(&tens);
+	onesSprite.setTexture(&ones);
+	
 }
 
 void setLives(Lives * life, int lifeNum) {
