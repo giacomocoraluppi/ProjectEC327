@@ -59,6 +59,19 @@ int main()
 	sf::RectangleShape planet(sf::Vector2f(540.0, 540.0));
 	sf::Texture planetTexture;
 
+	//set up digit sprites
+	sf::RectangleShape planetLivesTens(sf::Vector2f(15*4, 21*4));
+	sf::Texture planetLivesTensDigit;
+
+	planetLivesTens.setOrigin(15*2, 21*2);
+	planetLivesTens.setPosition(40, 540);
+
+	sf::RectangleShape planetLivesOnes(sf::Vector2f(15*4, 21*4));
+	sf::Texture planetLivesOnesDigit;
+
+	planetLivesOnes.setOrigin(15*2, 21*2);
+	planetLivesOnes.setPosition(100, 540);
+
 	//set textures before game loop
 	loadBaseTextures(player, playerTexture, playerVals, planet, planetTexture, planetVals);
 
@@ -81,6 +94,7 @@ int main()
 	int countAsteroid = 0;
 	int countBullet = 0;
 	int countLives = 3;
+	int countPlanetLives = planetVals->health;
 
 	double nowAsteroid = 0.0;
 	double nowBullet = 0.0;
@@ -169,6 +183,8 @@ int main()
 				asteroidPtrArray[i]->hitFlag = true;
 				asteroidPtrArray[i]->asteroidHit.restart();
 
+				countPlanetLives--;
+
 				asteroidPtrArray[i]->loseLives();
 				planetVals->loseLives(asteroidPtrArray[i]->damage);
 
@@ -236,6 +252,7 @@ int main()
 		//update functions for graphics
 		updatePlayer(player, playerVals);
 		updatePlanet(planet, planetTexture, planetVals, planetTime);
+		updatePlanetLives(planetLivesTens, planetLivesOnes, planetLivesTensDigit, planetLivesOnesDigit, countPlanetLives);
 		planetVals->planetShake();
 
 		for (int i = 0; i < countBullet; i++) { //bullet update
@@ -254,7 +271,7 @@ int main()
 
 		//drawing functions
 		loadBackground(background, backgroundTexture, backgroundTime);
-		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives);
+		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives, planetLivesTens, planetLivesOnes);
 	}
 
 	return 0;
