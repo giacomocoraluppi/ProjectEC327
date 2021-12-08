@@ -30,6 +30,9 @@ bool dist(int x1, int y1, int x2, int y2, int max)
 
 int main()
 {
+	
+	start: //FIXXX
+
 	//initialize thePlanet and theShip
 	Planet* thePlanet = new Planet();
 	Ship* theShip = new Ship();
@@ -55,7 +58,7 @@ int main()
 	std::chrono::steady_clock::time_point nowTime = std::chrono::steady_clock::now();
 	int respawnTime = 1000;
 	
-	while (true)
+	while (true) 
 	{
 		nowAsteroid = std::chrono::steady_clock::now();
 		nowBullet = std::chrono::steady_clock::now();
@@ -141,11 +144,11 @@ int main()
 				if (thePlanet->health < 1)
 				{
 					cout << "Planet has been destroyed. You have lost the game!" << endl;
-					exit;
+					goto gameOver;
 				}
 			}
 		}
-		
+		goto gameOver;
 		//check to see if any asteroids crashed against the ship
 		for (int i=0; i<countAsteroid; i++)
 		{
@@ -164,7 +167,7 @@ int main()
 				if (theShip->health < 1)
 				{
 					cout << "Ship has been destroyed. You have lost the game!" << endl;
-					exit;
+					goto gameOver;
 				}
 			}
 		}
@@ -198,6 +201,32 @@ int main()
 			}
 		}
 	}
+	
+	
+	
+	gameOver:
+	//here display the game over screen
+	//put game over sprite (30xsize): x between (135-1785) y between (100-370)
+	//put play again sprite (10xsize): x between (335-1585) y between (500-820)
+	std::chrono::steady_clock::time_point startGameOver = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point diffTime = std::chrono::steady_clock::now();
+	while (std::chrono::duration_cast<std::chrono::milliseconds> (diffTime-startGameOver).count() <= 20000)
+	{
+		cout << "gameover" << endl;
+		diffTime = std::chrono::steady_clock::now();
+		//if (mouseClickX < 1585 && mouseClickX > 335 && mouseClickY < 820 && mouseClickY > 500)
+		{
+			cout << "end" << endl;
+			goto start;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	return 0;
 }
