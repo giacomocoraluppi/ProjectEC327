@@ -1,18 +1,13 @@
-#include "Asteroid.h"
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <time.h>
+
+#include "graphics.h"
 #include "Ship.h"
 #include "Planet.h"
 #include "Bullet.h"
-
-#include <chrono>
-#include <string>
-#include <cmath>
-#include <sstream>
-#include <unistd.h>
-#include <stdlib.h>
-#include <ctime>
-#include <iostream>
-
-//#include <SFML/Graphics.hpp>
+#include "Asteroid.h"
+#include "Lives.h"
 
 using namespace std;
 
@@ -22,182 +17,283 @@ bool dist(int x1, int y1, int x2, int y2, int max)
 	{
 		return true;
 	}
-	else 
-	{	
+	else
+	{
 		return false;
 	}
 }
 
 int main()
 {
-	//initialize thePlanet and theShip
-	Planet* thePlanet = new Planet();
-	Ship* theShip = new Ship();
-	Bullet* bullet[100] = {};
-	for (int i=0; i<100; i++)
-	{
-		bullet[i] = new Bullet(0,0,0);
-	}
-	Asteroid* asteroid[100] = {};
-	for (int i=0; i<100; i++) 
-	{
-		asteroid[i] = new Asteroid();
-	}
+	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Protect the Planet", sf::Style::Fullscreen | sf::Style::Close);
 	
-	std::chrono::steady_clock::time_point startAsteroid = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point startBullet = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point nowAsteroid = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point nowBullet = std::chrono::steady_clock::now();
+	//declare classes
+	Ship* playerVals = new Ship();
+	Planet* planetVals = new Planet();
+	
+	Bullet* bulletPtrArray[500] = {};
+	for (int i = 0; i < 500; i++)
+	{
+		bulletPtrArray[i] = new Bullet(0, 0, 90);
+	}
+
+	Asteroid* asteroidPtrArray[500] = {};
+	for (int i = 0; i < 500; i++)
+	{
+		asteroidPtrArray[i] = new Asteroid();
+	}
+
+	Lives* livesPtrArray[3] = {}; //number of lives for the ship
+	for (int i = 0; i < 4; i++)
+	{
+		livesPtrArray[i] = new Lives();
+	}
+
+	//declare objects
+	sf::RectangleShape background(sf::Vector2f(1920, 1080));
+	sf::Texture backgroundTexture;
+
+	sf::RectangleShape player(sf::Vector2f(40.0, 70.0));
+	sf::Texture playerTexture;
+
+	sf::RectangleShape planet(sf::Vector2f(540.0, 540.0));
+	sf::Texture planetTexture;
+
+	//set up digit sprites
+	sf::RectangleShape planetLivesTens(sf::Vector2f(15*4, 21*4));
+	sf::Texture planetLivesTensDigit;
+
+	planetLivesTens.setOrigin(15*2, 21*2);
+	planetLivesTens.setPosition(40, 540);
+
+	sf::RectangleShape planetLivesOnes(sf::Vector2f(15*4, 21*4));
+	sf::Texture planetLivesOnesDigit;
+
+	planetLivesOnes.setOrigin(15*2, 21*2);
+	planetLivesOnes.setPosition(100, 540);
+
+	//set up score sprites
+	sf::RectangleShape scoreHundredsSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreHundredsTexture;
+	sf::RectangleShape scoreTensSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreTensTexture;
+	sf::RectangleShape scoreOnesSprite(sf::Vector2f(15 * 4, 21 * 4));
+	sf::Texture scoreOnesTexture;
+
+	scoreHundredsSprite.setOrigin(15 * 2, 21 * 2);
+	scoreHundredsSprite.setPosition(1770, 50);
+
+	scoreTensSprite.setOrigin(15 * 2, 21 * 2);
+	scoreTensSprite.setPosition(1830, 50);
+
+	scoreOnesSprite.setOrigin(15 * 2, 21 * 2);
+	scoreOnesSprite.setPosition(1890, 50);
+
+	int score = 1;
+
+	//set textures before game loop
+	loadBaseTextures(player, playerTexture, playerVals, planet, planetTexture, planetVals);
+
+	//set timers before game
+	sf::Clock startBullet;
+	sf::Time bulletSpawnRate = sf::milliseconds(300);
+
+	sf::Clock startAsteroid;
+	sf::Time AsteroidSpawnRate = sf::milliseconds(3000);
+
+	sf::Clock difficultyTimer;
+	sf::Time difficultyChangeRate = sf::milliseconds(15000);
+	int currentDifficulty = 1;
+	int difficultyMax = 10;
+
+	double backgroundTime = time(NULL);
+	double planetTime = time(NULL);
+
+	//set counters before game
 	int countAsteroid = 0;
 	int countBullet = 0;
-	
-	std::chrono::steady_clock::time_point startTime = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point nowTime = std::chrono::steady_clock::now();
-	int respawnTime = 1000;
-	
-	while (true)
-	{
-		nowAsteroid = std::chrono::steady_clock::now();
-		nowBullet = std::chrono::steady_clock::now();
-		nowTime = std::chrono::steady_clock::now();
-		
-		//every 15 seconds decrease respawn time by 200 milliseconds
-		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowTime-startTime).count() >= 5000)
-		{
-			startTime = std::chrono::steady_clock::now();
-			respawnTime = respawnTime - 50;
-			cout << "respawn time in milliseconds: " << respawnTime << endl;
+	int countLives = 3;
+	int countPlanetLives = planetVals->health;
+
+	double nowAsteroid = 0.0;
+	double nowBullet = 0.0;
+
+	//set location for life hearts
+	for (int i = 0; i < countLives; i++) {
+		setLives(livesPtrArray[i], i);
+	}
+
+	//set animation speed
+	sf::Time asteroidAnimationSpeed = sf::milliseconds(300);
+
+	//game loop
+	while (window.isOpen()) {
+
+		//window events
+		sf::Event evnt;
+		while (window.pollEvent(evnt)) {
+			switch (evnt.type) {
+			case sf::Event::Closed:
+				window.close();
+				break;
+			}
 		}
-		
-		//every 3*respawnTime milliseconds spawn a new asteroid
-		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowAsteroid-startAsteroid).count() >= 3*respawnTime)
+
+		//movement functions
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
+			playerVals->RightRotation();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
+			playerVals->LeftRotation();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+			playerVals->WPressed(); //replace with ship move functions (note y-axis is inverted)
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+			playerVals->SPressed(); //replace with ship move functions (note y-axis is inverted)
+		}
+
+		//generate bullet when key is pressed with a cooldown
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+			if (startBullet.getElapsedTime() >= bulletSpawnRate)
+			{
+				startBullet.restart();
+				bulletPtrArray[countBullet] = new Bullet(playerVals->xLocation, playerVals->yLocation, playerVals->angle);
+
+				countBullet++;
+			}
+		}
+
+		//randmly generate asteroids
+		if (startAsteroid.getElapsedTime() >= AsteroidSpawnRate)
 		{
-			startAsteroid = std::chrono::steady_clock::now();
-			asteroid[countAsteroid] = new Asteroid();
-			cout << "new asteroid" << countAsteroid << endl;
+			startAsteroid.restart();
+			asteroidPtrArray[countAsteroid] = new Asteroid();
+
 			countAsteroid++;
 		}
-		
-		//every 1*respawnTime milliseconds shoot a new bullet
-		if (std::chrono::duration_cast<std::chrono::milliseconds> (nowBullet-startBullet).count() >= 1*respawnTime)
+
+		//check to see if any asteroids crashed against the ship
+		for (int i = 0; i < countAsteroid; i++)
 		{
-			startBullet = std::chrono::steady_clock::now();
-			bullet[countBullet] = new Bullet(theShip->xLocation, theShip->yLocation, theShip->angle);
-			cout << "new bullet" << countBullet << endl;
-			countBullet++;
-		}
-		
-		//update rotation and location of ship
-		//if (key = <)
-		{
-			theShip->LeftRotation();
-		}
-		//if (key =>)
-		{
-			theShip->RightRotation();
-		}
-		theShip->update();
-		
-		//update location of each bullet
-		for (int i=0; i<countBullet; i++)
-		{
-			bullet[i]->update();			
-		}
-		
-		//delete bullet if out of screen
-		for (int i=0; i<countBullet; i++)
-		{
-			if (bullet[i]->IsOut() == true)
+			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, playerVals->xLocation, playerVals->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
-				for (int k=i; k<countBullet; k++)
+				asteroidPtrArray[i]->hitFlag = true;
+				asteroidPtrArray[i]->asteroidHit.restart();
+
+				countLives--;
+
+				asteroidPtrArray[i]->loseLives();
+				playerVals->loseLives(asteroidPtrArray[i]->damage);
+
+				if (playerVals->health < 1)
 				{
-					bullet[k] = bullet[k+1];
+					cout << "Player has been destroyed. You have lost the game!" << endl;
+					//need to actually end game
 				}
-				countBullet--;	
 			}
 		}
-		
-		//update location of each asteroid
-		for (int i=0; i<countAsteroid; i++)
-		{
-			asteroid[i]->update();
-		}
-		
+
 		//check to see if any asteroids crashed against the planet 
-		for (int i=0; i<countAsteroid; i++)
+		for (int i = 0; i < countAsteroid; i++)
 		{
-			if (dist(asteroid[i]->xLocation,asteroid[i]->yLocation,thePlanet->xLocation,thePlanet->yLocation,10) == true)
+			if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, planetVals->xLocation, planetVals->yLocation, 250) == true) && asteroidPtrArray[i]->hitFlag == false)
 			{
-				asteroid[i]->loseLives();
-				thePlanet->loseLives();
-				if (asteroid[i]->health < 1)
-				{
-					for (int k=i; k<countAsteroid; k++)
-					{
-						asteroid[k] = asteroid[k+1];
-					}
-					countAsteroid--;
-				}
-				if (thePlanet->health < 1)
+				asteroidPtrArray[i]->hitFlag = true;
+				asteroidPtrArray[i]->asteroidHit.restart();
+
+				countPlanetLives--;
+
+				asteroidPtrArray[i]->loseLives();
+				planetVals->loseLives(asteroidPtrArray[i]->damage);
+
+				if (planetVals->health < 1)
 				{
 					cout << "Planet has been destroyed. You have lost the game!" << endl;
-					exit;
+					//need to end game here
 				}
 			}
 		}
-		
-		//check to see if any asteroids crashed against the ship
-		for (int i=0; i<countAsteroid; i++)
-		{
-			if (dist(asteroid[i]->xLocation,asteroid[i]->yLocation,theShip->xLocation,theShip->yLocation,10) == true)
-			{
-				asteroid[i]->loseLives();
-				theShip->loseLives();
-				if (asteroid[i]->health < 1)
-				{
-					for (int k=i; k<countAsteroid; k++)
-					{
-						asteroid[k] = asteroid[k+1];
-					}
-					countAsteroid--;
-				}
-				if (theShip->health < 1)
-				{
-					cout << "Ship has been destroyed. You have lost the game!" << endl;
-					exit;
-				}
-			}
-		}
-		
+
 		//check to see if any asteroids have been hit by any bullets
-		for (int i=0; i<countAsteroid; i++)
+		for (int i = 0; i < countAsteroid; i++)
 		{
-			for (int j=0; j<countBullet; j++)
+			for (int j = 0; j < countBullet; j++)
 			{
-				if (dist(asteroid[i]->xLocation,asteroid[i]->yLocation,bullet[j]->xLocation,bullet[j]->yLocation,10) == true)
+				if ((dist(asteroidPtrArray[i]->xLocation, asteroidPtrArray[i]->yLocation, bulletPtrArray[j]->xLocation, bulletPtrArray[j]->yLocation, 50) == true) && asteroidPtrArray[i]->hitFlag == false)
 				{
-					asteroid[i]->loseLives();
-					bullet[j]->loseLives();
-					if (asteroid[i]->health < 1)
+					asteroidPtrArray[i]->hitFlag = true;
+					asteroidPtrArray[i]->asteroidHit.restart();
+
+					score++;
+
+					asteroidPtrArray[i]->loseLives();
+					bulletPtrArray[j]->loseLives();
+				}
+
+				if (bulletPtrArray[j]->health < 1)
+				{
+					delete bulletPtrArray[j];
+
+					for (int k = j; k < countBullet; k++)
 					{
-						for (int k=i; k<countAsteroid; k++)
-						{
-							asteroid[k] = asteroid[k+1];
-						}
-						countAsteroid--;
+						bulletPtrArray[k] = bulletPtrArray[k + 1];
 					}
-					if (bullet[j]->health < 1)
-					{
-						for (int k=j; k<countBullet; k++)
-						{
-							bullet[k] = bullet[k+1];
-						}
-						countBullet--;
-					}
+					countBullet--;
 				}
 			}
 		}
+
+
+		//delete bullet if out of screen
+		for (int i = 0; i < countBullet; i++)
+		{
+			if (bulletPtrArray[i]->IsOut() == true)
+			{
+				for (int k = i; k < countBullet; k++)
+				{
+					bulletPtrArray[k] = bulletPtrArray[k + 1];
+				}
+				countBullet--;
+			}
+		}
+
+		//speeds up the game every 15 seconds
+		if (currentDifficulty < difficultyMax) {
+			if (difficultyTimer.getElapsedTime() >= difficultyChangeRate)
+			{
+				difficultyTimer.restart();
+				AsteroidSpawnRate = AsteroidSpawnRate - sf::milliseconds(200);
+
+				currentDifficulty++;
+			}
+		}
+
+		//update functions for graphics
+		updatePlayer(player, playerVals);
+		updatePlanet(planet, planetTexture, planetVals, planetTime);
+		updatePlanetLives(planetLivesTens, planetLivesOnes, planetLivesTensDigit, planetLivesOnesDigit, countPlanetLives);
+		updateScore(scoreHundredsSprite, scoreTensSprite, scoreOnesSprite, scoreHundredsTexture, scoreTensTexture, scoreOnesTexture, score);
+		planetVals->planetShake();
+
+		for (int i = 0; i < countBullet; i++) { //bullet update
+			updateBullet(bulletPtrArray[i]);
+		}
+
+		for (int i = 0; i < countAsteroid; i++) { //asteroid update
+			updateAsteroid(asteroidPtrArray[i]);
+
+			if (asteroidPtrArray[i]->hitFlag == true)
+			{
+				asteroidCollision(asteroidPtrArray, countAsteroid, i, asteroidAnimationSpeed);
+				asteroidPtrArray[i]->asteroidDestroyedAnimation(asteroidAnimationSpeed);
+			}
+		}
+
+		//drawing functions
+		loadBackground(background, backgroundTexture, backgroundTime);
+		drawGame(window, background, player, planet, bulletPtrArray, countBullet, asteroidPtrArray, countAsteroid, livesPtrArray, countLives, planetLivesTens, planetLivesOnes, scoreHundredsSprite, scoreTensSprite, scoreOnesSprite);
 	}
-	
+
 	return 0;
 }
